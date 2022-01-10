@@ -1,0 +1,31 @@
+FROM hub.byted.org/base/lab.pytorch:1.5.1
+LABEL maintainer="Jacob Jiang <Jiangbo.jacob@bytedance.com>"
+
+RUN apt update && apt install -y \
+      cmake netbase patchelf libubsan0 \
+      libcilkrts5 libsndfile-dev && \
+      rm -rf /var/lib/apt/lists/*
+RUN export https_proxy=http://10.20.47.147:3128 http_proxy=http://10.20.47.147:3128 && \
+    pip3 install byted-dataloader==0.2.5 -i https://bytedpypi.byted.org/simple \
+    --trusted-host bytedpypi.byted.org && \
+    unset https_proxy http_proxy
+
+
+# 2
+RUN pip3 install --index-url=http://pypi.byted.org/simple/pypi/+simple \
+                    --trusted-host=pypi.byted.org \
+                    addict==2.4.0 \
+                    yapf==0.31.0 sox==1.4.1 \
+                    kaldi_io==0.9.4 \
+                    librosa==0.8.1 \
+                    openfst_python==1.7.3 \
+                    subword-nmt==0.3.7 cython==0.29.24 black==21.7b0\
+                    fairseq==0.7.2 pylint==2.6.0 \
+                    retry==0.9.2 eventlet==0.26.1 \
+                    click==7.1.2 requests==2.24.0 \
+                    scipy==1.7.1 pytest-runner==5.3.1 \
+                    ninja==1.10.0.post2 && pip3 install \
+                    --index-url=http://pypi.byted.org/simple/pypi/+simple \
+                    --trusted-host=pypi.byted.org kaldiio==2.17.2
+
+RUN pip3 install mxnet gluonbook pymysql lxml bs4 black gpustat minlp-tokenizer flask flask_cors
