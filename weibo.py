@@ -197,21 +197,21 @@ class Weibo:
             print('Error: ', e)
             traceback.print_exc()
             return {}
-    
-    def get_user_mhome(self,user_id):
-        url='https://m.weibo.cn/api/container/getIndex?type=uid&value={}'.format(user_id)
+
+    def get_user_mhome(self, user_id):
+        url = 'https://m.weibo.cn/api/container/getIndex?type=uid&value={}'.format(user_id)
         s = self.html_str(url)
         obj_json = json.loads(s)
         data = []
         if obj_json.get('ok', 0) != 1:
             return {'code': 1, 'data': data, 'count': len(data)}
         obj = obj_json['data']['userInfo']
-        obj['blogs']=obj['statuses_count']
-        obj['follows']=obj['follow_count']
-        obj['fans']=obj['followers_count']
-        obj['user_id']=obj['id']
-        obj['nickname']=obj['screen_name']
-        obj['img']=obj['profile_image_url']
+        obj['blogs'] = obj['statuses_count']
+        obj['follows'] = obj['follow_count']
+        obj['fans'] = obj['followers_count']
+        obj['user_id'] = obj['id']
+        obj['nickname'] = obj['screen_name']
+        obj['img'] = obj['profile_image_url']
         return obj
 
     def get_blogs(self, user_id, page=1):  # 需要cookie
@@ -273,7 +273,7 @@ class Weibo:
         url = 'https://m.weibo.cn/api/container/getIndex?containerid=231051_-_followers_-_2879338501&page=1'
         s = self.html_str(url)
         print(s)
-    
+
     def get_user_id(self, nickname, page=1):
         # 用户名需要URL编码后
         url = "https://s.weibo.com/user/&nickname={}&page={}".format(parse.quote(nickname), page)
@@ -423,47 +423,42 @@ class Weibo:
             )
         res['data'] = data
         return res
-    
-    def get_follows_m(self,user_id,page=1):
-        url = 'https://m.weibo.cn/api/container/getIndex?containerid=231051_-_followers_-_{}&page={}'.format(user_id,page)
+
+    def get_follows_m(self, user_id, page=1):
+        url = 'https://m.weibo.cn/api/container/getIndex?containerid=231051_-_followers_-_{}&page={}'.format(
+            user_id, page
+        )
         s = self.html_str(url)
         obj_json = json.loads(s)
         data = []
         if obj_json.get('ok', 0) != 1:
             return {'code': 1, 'data': data, 'count': len(data)}
         obj = obj_json['data']['cards'][-1]
-        data=[]
+        data = []
         for x in obj['card_group']:
-            user=x['user']
-            user['scheme']=x['scheme']
-            user['str']=user.get('verified_reason',user.get('description',''))
+            user = x['user']
+            user['scheme'] = x['scheme']
+            user['str'] = user.get('verified_reason', user.get('description', ''))
             data.append(user)
-        return {
-            'data': data,
-            'count': len(data),
-            'code': 0,
-            'page': page
-        }
-    def get_fans_m(self,user_id,page=1):
-        url = 'https://m.weibo.cn/api/container/getIndex?containerid=231051_-_fans_-_{}&page={}'.format(user_id,page)
+        return {'data': data, 'count': len(data), 'code': 0, 'page': page}
+
+    def get_fans_m(self, user_id, page=1):
+        url = 'https://m.weibo.cn/api/container/getIndex?containerid=231051_-_fans_-_{}&page={}'.format(
+            user_id, page
+        )
         s = self.html_str(url)
         obj_json = json.loads(s)
         data = []
         if obj_json.get('ok', 0) != 1:
             return {'code': 1, 'data': data, 'count': len(data)}
         obj = obj_json['data']['cards'][-1]
-        data=[]
+        data = []
         for x in obj['card_group']:
-            user=x['user']
-            user['scheme']=x['scheme']
-            user['str']=user.get('verified_reason',user.get('description',''))
+            user = x['user']
+            user['scheme'] = x['scheme']
+            user['str'] = user.get('verified_reason', user.get('description', ''))
             data.append(user)
-        return {
-            'data': data,
-            'count': len(data),
-            'code': 0,
-            'page': page
-        }
+        return {'data': data, 'count': len(data), 'code': 0, 'page': page}
 
     def get_hot(self):
         # 获取热搜
@@ -595,8 +590,11 @@ class Weibo:
             'page': page,
             'code': 0,
         }
-    def get_comments_m(self,mid,page=1):
-        url='https://m.weibo.cn/comments/hotflow?id={}&mid={}&max_id_type=0&page={}'.format(mid,mid,page)
+
+    def get_comments_m(self, mid, page=1):
+        url = 'https://m.weibo.cn/comments/hotflow?id={}&mid={}&max_id_type=0&page={}'.format(
+            mid, mid, page
+        )
         s = self.html_str(url)
         obj_json = json.loads(s)
         data = []
@@ -632,8 +630,6 @@ class Weibo:
             'page': page,
             'code': 0,
         }
-
-
 
 
 weibo = Weibo()
