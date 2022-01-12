@@ -1,3 +1,6 @@
+import torch
+
+
 class NgramTransfomer:
     def __init__(self, context_size):
         self.context_size = context_size

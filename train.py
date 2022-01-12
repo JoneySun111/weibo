@@ -3,6 +3,7 @@ import sys
 from argparse import ArgumentParser
 
 from runner.base_runner import *
+from runner.embedding_runner import *
 from util.utils import *
 from util.config import *
 
@@ -33,7 +34,7 @@ def main():
     if args.dump_config:
         cfg.dump("./complete_config.py")
 
-    runner = BaseRunner(cfg)
+    runner = eval(cfg.get('runner', 'BaseRunner'))(cfg)
     if not cfg.get('inference', None):
         runner.run()
     return runner

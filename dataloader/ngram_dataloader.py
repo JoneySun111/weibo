@@ -1,18 +1,19 @@
 import random
+from dataloader.dataloader import *
+from transform.ngram_transfomer import *
+from transform.base_tokenizer import *
 
 
-class Dataloader:
-    def __init__(
-        self,
-        path_list,
-        batch_size=1,
-        shuffle=True,
-    ):
-        assert isinstance(path_list, list)
-        self.path_list = path_list
-        self.batch_size = batch_size
-        self.shuffle = shuffle
-        self.epoch_count = 0
+class NgramDataloader(Dataloader):
+    def __init__(self, path_list, batch_size=1, context_size=3, shuffle=True, tokenize=True):
+        super().__init__(path_list, batch_size, shuffle)
+        self.context_size = context_size
+        self.tokenize = tokenize
+        self.transfomer = NgramTransfomer(self.context_size)
+        if tokenize:
+            self.tokenizer = BaseTokenizer()
+        else:
+            self.tokenizer = None
 
     def reset(
         self,
@@ -28,14 +29,20 @@ class Dataloader:
                 line = f.readline()
                 while line:
                     line = line.replace('\u200b', '').strip().split(',')
-                    label = int(line[1])
+                    # label = int(line[1])
                     input = ','.join(line[2:])
-                    self.data.append([input, label])
+                    if self.tokenize:
+                        input = self.tokenizer(input)
+                    for _input, _label in list(zip(*self.transfomer(input))):
+                        self.data.append([_input, _label])
                     line = f.readline()
+                    if len(line) > 20000:
+                        break
         if self.shuffle:
             random.shuffle(self.data)
 
     def next(self):
+        return super().next()
         batch_data = None
         try:
             data = self.data[self.index : self.index + self.batch_size]

@@ -2,8 +2,8 @@
     'max_epoch': 5,
     'model': 'IMDBModel(3000,50,50)',
     'log_interval': 10,
-    'train_dataloader': "dataloader(['dataset/train.txt'], batch_size)",
-    'valid_dataloader': "dataloader(['dataset/test.txt'], batch_size)",
+    'train_dataloader': "Dataloader(['dataset/train.txt'], batch_size)",
+    'valid_dataloader': "Dataloader(['dataset/test.txt'], batch_size)",
     'transform': "["
     "BaseTokenizer(),"
     "BaseTransform('dump/tokenizer_mapping_3000.data',max_word_size=50),"

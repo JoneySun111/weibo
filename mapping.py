@@ -41,15 +41,17 @@ class mapping:
         del self.items
 
     def word_to_id(self, word):
-        return self.word2id.get(word, mapping.UNK)
+        return torch.tensor(self.word2id.get(word, mapping.UNK))
 
     def mapping_from_sentence(self, sentence):
         lst = []
         for i, word in enumerate(sentence):
-            if i >= self.max_word_size:
+            if i >= self.max_word_size and self.max_word_size > 0:
                 break
             lst.append(self.word_to_id(word))
-        return torch.tensor(lst + [mapping.PAD] * (self.max_word_size - len(lst)))
+        if self.max_word_size <= 0:
+            return torch.stack(lst)
+        return torch.stack(lst + [mapping.PAD] * (self.max_word_size - len(lst)))
 
     def mapping_from_sentences(self, sentences):
         lst = []

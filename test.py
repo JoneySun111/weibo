@@ -9,7 +9,7 @@ from minlptokenizer.tokenizer import MiNLPTokenizer
 
 
 def test_dataloader():
-    test_dataloader = dataloader(['dataset/test.txt'], 10, False)
+    test_dataloader = Dataloader(['dataset/test.txt'], 10, False)
     test_dataloader.reset()
     for i in range(100000):
         print(test_dataloader.next())
@@ -21,7 +21,7 @@ max_word_size = 100
 
 
 def test_mapping():
-    train_dataloader = dataloader(['dataset/train.txt'], batch_size)
+    train_dataloader = Dataloader(['dataset/train.txt'], batch_size)
     train_dataloader.reset()
     data = train_dataloader.next()
     mp = mapping(max_word_size)
@@ -48,7 +48,7 @@ def test_tokenizer():
     # train_dataloader = mysql_dataloader(10,shuffle=False)
     # train_dataloader.reset()
     tokenizer = MiNLPTokenizer(granularity='fine')  # fine：细粒度，coarse：粗粒度，默认为细粒度
-    train_dataloader = dataloader(['dataset/train.txt'], batch_size)
+    train_dataloader = Dataloader(['dataset/train.txt'], batch_size)
     train_dataloader.reset()
     data = train_dataloader.next()
     mp = mapping(max_word_size)
@@ -91,8 +91,8 @@ def test_model():
     tokenizer = MiNLPTokenizer(granularity='fine')
     # print(imdb_model)
 
-    train_dataloader = dataloader(['dataset/train.txt'], batch_size)
-    test_dataloader = dataloader(['dataset/test.txt'], batch_size)
+    train_dataloader = Dataloader(['dataset/train.txt'], batch_size)
+    test_dataloader = Dataloader(['dataset/test.txt'], batch_size)
     inference_dataloader = mysql_dataloader(batch_size)
 
     def train(epoch):
