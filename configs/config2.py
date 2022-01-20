@@ -14,5 +14,5 @@
     # 'test':True,
     # 'checkpoint': 'checkpoints/best.pkl',
     # 'inference': True,
-    'batch_size': 100,
+    'batch_size': 10,
 }

@@ -1,5 +1,4 @@
-from model.imdb_model import *
-from model.ngram_model import *
+from model import *
 from util.utils import *
 from util.log import *
 from dataloader.dataloader import *
