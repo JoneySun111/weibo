@@ -7,7 +7,7 @@ from transform.ngram_transfomer import *
 from dataloader.ngram_dataloader import *
 
 
-class EmbeddingRunner(BaseRunner):
+class NgramRunner(BaseRunner):
     def __init__(self, cfg):
         super().__init__(cfg)
 

@@ -1,5 +1,5 @@
 {
-    'runner': 'EmbeddingRunner',
+    'runner': 'NgramRunner',
     'max_epoch': 10,
     'model': 'NgramModel(3000,3,40)',
     'log_interval': 100,
