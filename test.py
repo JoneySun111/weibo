@@ -23,17 +23,20 @@ def test_mapping():
     dataset = SkipGramDataset(['dataset/comments.log'])
     dataloader = torch.utils.data.DataLoader(dataset=dataset, batch_size=batch_size, shuffle=True)
 
-    mp = mapping(max_word_size)
+    mp=mapping.load('dump/tokenizer_mapping_comments_3000.data')
+    print(len(mp.mp))
+    print(list(mp.mp.items())[:30])
+    # mp = mapping(max_word_size)
     # mp = mapping.load('dump/mapping_3000.data')
     # print(data['input'])
     # print(mp.mapping_from_sentences(data['input']))
     # print(mp.get_sentences(mp.mapping_from_sentences(data['input'])))
 
-    tokenizer = MiNLPTokenizer(granularity='fine')
-    for data in dataloader:
-        mp.add_sentences(tokenizer.cut(data))
-    mp.init(mapping_size)
-    mp.dump('dump/tokenizer_mapping_comments_3000.data')
+    # tokenizer = MiNLPTokenizer(granularity='fine')
+    # for data in dataloader:
+    #     mp.add_sentences(tokenizer.cut(data))
+    # mp.init(mapping_size)
+    # mp.dump('dump/tokenizer_mapping_comments_3000.data')
     # mp=mapping.load('dump/mapping_2000.data')
     # print(mp.mapping_from_sentences(data['input']).cuda())
     # print(mp.get_idx())
