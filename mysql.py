@@ -166,3 +166,14 @@ class mysql:
 # # print(mysql.do_sql('select * from user'))
 # mysql.add_user()
 # print(mysql.query_all_users())
+# print(mysql.query_comments(None,0,10))
+if __name__=='__main__':
+    with open("dataset/blogs.log","w+") as f:
+        for i in range(1000):
+            comments=mysql.query_blogs(None,i,10000)
+            if len(comments)==0:
+                break
+            comments=list(map(lambda x:x[0].strip(),comments))
+            comments=list(filter(lambda x:len(x)>1,comments))
+            f.write('\n'.join(comments))
+            print(i,'finish')

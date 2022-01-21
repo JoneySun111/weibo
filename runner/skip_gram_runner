@@ -1,13 +1,11 @@
 import sys
 
-# sys.path.append("..")
 import torch
 from runner import *
-from transform.ngram_transfomer import *
-from dataloader.ngram_dataloader import *
+from dataloader import *
 
 
-class NgramRunner(BaseRunner):
+class SkipGramRunner(BaseRunner):
     def __init__(self, cfg):
         super().__init__(cfg)
 

@@ -1,8 +1,7 @@
 from time import time
 import torch
 from mapping import *
-from dataloader.dataloader import *
-from dataloader.mysql_dataloader import *
+from dataloader import *
 from model.imdb_model import IMDBModel
 
 from minlptokenizer.tokenizer import MiNLPTokenizer
@@ -15,29 +14,26 @@ def test_dataloader():
         print(test_dataloader.next())
 
 
-batch_size = 100
+batch_size = 10
 mapping_size = 3000
 max_word_size = 100
 
 
 def test_mapping():
-    train_dataloader = Dataloader(['dataset/train.txt'], batch_size)
-    train_dataloader.reset()
-    data = train_dataloader.next()
+    dataset = SkipGramDataset(['dataset/comments.log'])
+    dataloader = torch.utils.data.DataLoader(dataset=dataset, batch_size=batch_size, shuffle=True)
+
     mp = mapping(max_word_size)
     # mp = mapping.load('dump/mapping_3000.data')
     # print(data['input'])
     # print(mp.mapping_from_sentences(data['input']))
     # print(mp.get_sentences(mp.mapping_from_sentences(data['input'])))
 
-    # return
-    while data:
-        mp.add_sentences(data.get('input'))
-        data = train_dataloader.next()
+    tokenizer = MiNLPTokenizer(granularity='fine')
+    for data in dataloader:
+        mp.add_sentences(tokenizer.cut(data))
     mp.init(mapping_size)
-    train_dataloader.reset()
-    data = train_dataloader.next()
-    mp.dump('dump/mapping_3000.data')
+    mp.dump('dump/tokenizer_mapping_comments_3000.data')
     # mp=mapping.load('dump/mapping_2000.data')
     # print(mp.mapping_from_sentences(data['input']).cuda())
     # print(mp.get_idx())
@@ -170,6 +166,6 @@ def test_model():
 if __name__ == '__main__':
     # print(torch.__version__)
     # print(torch.cuda.is_available())
-    # test_mapping()
+    test_mapping()
     # test_tokenizer()
-    test_model()
+    # test_model()
