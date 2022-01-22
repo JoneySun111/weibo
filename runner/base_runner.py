@@ -72,7 +72,7 @@ class BaseRunner:
             for transform in self.transform:
                 batch_data["input"] = transform(batch_data["input"])
             self.target = torch.tensor(batch_data["label"]).to(self.device)
-            self.output = self.model(batch_data.get("input")).to(self.device)
+            self.output = self.model(batch_data.get("input"))
             self.after_train_iter()
 
         self.after_run()
@@ -108,7 +108,7 @@ class BaseRunner:
         with torch.no_grad():
             for transform in self.transform:
                 batch_data = transform(batch_data)
-            output = math.e ** self.model(batch_data).to(self.device)
+            output = math.e ** self.model(batch_data)
             pred = torch.max(output, dim=-1, keepdim=False)[-1]
             res = list(zip(batch_data, pred))
             print("\n".join([str(x) for x in res]))

@@ -35,7 +35,8 @@ class NgramRunner(BaseRunner):
                 batch_data['label'] = transform(batch_data['label'], 'sentence')
             batch_data['label'] = batch_data['label'].squeeze(-1)
             self.target = batch_data['label'].to(self.device)
-            self.output = self.model(batch_data.get('input')).to(self.device)
+            t1=time()
+            self.output = self.model(batch_data.get('input').to(self.device))
             self.after_train_iter()
             # if self.iter%1000==0:
             #     for i in range(10):
@@ -60,7 +61,7 @@ class NgramRunner(BaseRunner):
                     batch_data['label'] = transform(batch_data['label'], 'sentence')
                 batch_data['label'] = batch_data['label'].squeeze(-1)
                 target = batch_data['label'].to(self.device)
-                output = self.model(batch_data.get('input')).to(self.device)
+                output = self.model(batch_data.get('input').to(self.device))
                 self.val_loss += self.criterion(output, target, reduction="sum")
                 pred = torch.max(output, dim=-1, keepdim=False)[-1]
                 # guess
