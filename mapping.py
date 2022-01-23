@@ -9,7 +9,7 @@ class mapping:
     UNK = 1
     PAD = 0
 
-    def __init__(self, max_word_size=200):
+    def __init__(self, max_word_size=-1):
         self.mp = dict()  # counting
         self.max_word_size = max_word_size
 
@@ -28,7 +28,7 @@ class mapping:
         for sentence in sentences:
             self.add_sentence(sentence)
 
-    def init(self, mapping_size=9999999999):
+    def init(self, mapping_size=9999999999,debug=0):
         self.mapping_size = mapping_size
         self.items = list(self.mp.items())
         self.items.sort(key=lambda x: x[1], reverse=True)
@@ -39,6 +39,20 @@ class mapping:
                 break
         self.id2word = {v: k for k, v in self.word2id.items()}
         del self.items
+        self.freqs = {}
+        sum = 0
+        for key, value in self.mp.items():
+            x = self.word_to_id(key).item()
+            self.freqs.setdefault(x, 0)
+            self.freqs[x] += value
+            sum += value
+        del self.mp
+        if debug:
+            self.freqs = {k: v / sum for k, v in self.freqs.items()}
+            _lst=sorted(list(self.freqs.items()),key=lambda x:x[1])
+            print(_lst[:20])
+            print(_lst[-20:])
+            print('UNK:',self.freqs[1])
 
     def word_to_id(self, word):
         return torch.tensor(self.word2id.get(word, mapping.UNK))

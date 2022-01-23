@@ -4,8 +4,10 @@ from mapping import *
 from dataloader import *
 from model.imdb_model import IMDBModel
 
-from minlptokenizer.tokenizer import MiNLPTokenizer
-
+try:
+    from minlptokenizer.tokenizer import MiNLPTokenizer
+except:
+    ...
 
 def test_dataloader():
     test_dataloader = Dataloader(['dataset/test.txt'], 10, False)
@@ -20,24 +22,27 @@ max_word_size = 100
 
 
 def test_mapping():
-    dataset = SkipGramDataset(['dataset/comments.log'])
+    dataset = TxtDataset(['dataset/comments_test.data'])
     dataloader = torch.utils.data.DataLoader(dataset=dataset, batch_size=batch_size, shuffle=True)
+    print(len(dataset))
 
-    mp=mapping.load('dump/tokenizer_mapping_comments_3000.data')
-    print(len(mp.mp))
-    print(list(mp.mp.items())[:30])
-    # mp = mapping(max_word_size)
+    # mp=mapping.load('dump/tokenizer_mapping_comments_3000.data')
+    # print(len(mp.mp))
+    # print(list(mp.mp.items())[:30])
+
+    mp = mapping()
     # mp = mapping.load('dump/mapping_3000.data')
     # print(data['input'])
     # print(mp.mapping_from_sentences(data['input']))
     # print(mp.get_sentences(mp.mapping_from_sentences(data['input'])))
 
     # tokenizer = MiNLPTokenizer(granularity='fine')
-    # for data in dataloader:
-    #     mp.add_sentences(tokenizer.cut(data))
-    # mp.init(mapping_size)
-    # mp.dump('dump/tokenizer_mapping_comments_3000.data')
-    # mp=mapping.load('dump/mapping_2000.data')
+    for data in dataloader:
+        mp.add_sentences(data)
+        # mp.add_sentences(tokenizer.cut(data))
+    mp.init(mapping_size,debug=1)
+    mp.dump('dump/mapping_comments_3000.data')
+    # mp=mapping.load('dump/mapping_comments_3000.data')
     # print(mp.mapping_from_sentences(data['input']).cuda())
     # print(mp.get_idx())
     # print(mp.get_frequency())
