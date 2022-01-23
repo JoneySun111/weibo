@@ -2,6 +2,7 @@
 import torch
 import random
 import sys
+
 sys.path.append('..')
 from mapping import *
 
@@ -13,7 +14,7 @@ class SkipGramDataset(torch.utils.data.Dataset):
         self.window_size = window_size
         self.n_samples = n_samples
         assert isinstance(path_list, list)
-        self.mapping=mapping.load(mapping_path)
+        self.mapping = mapping.load(mapping_path)
         self.data = []
         self.idx = []
         for file in path_list:
@@ -31,11 +32,17 @@ class SkipGramDataset(torch.utils.data.Dataset):
         x, y = self.idx[idx]
         print(x, y)
         center_word = self.data[x][y]
-        pos_words = self.data[x][max(0,y-self.window_size):y]+self.data[x][y+1:min(len(self.data[x]),y+1+self.window_size)]
-        return center_word,pos_words
+        pos_words = (
+            self.data[x][max(0, y - self.window_size) : y]
+            + self.data[x][y + 1 : min(len(self.data[x]), y + 1 + self.window_size)]
+        )
+        return center_word, pos_words
 
-if __name__=='__main__':
-    dataset = SkipGramDataset(['../dataset/comments.data'],mapping_path='../dump/mapping_comments_3000.data')
+
+if __name__ == '__main__':
+    dataset = SkipGramDataset(
+        ['../dataset/comments.data'], mapping_path='../dump/mapping_comments_3000.data'
+    )
     print(len(dataset))
     print(dataset.data[0])
     print(dataset.data[1])

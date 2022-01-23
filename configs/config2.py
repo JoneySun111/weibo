@@ -15,5 +15,5 @@
     # 'checkpoint': 'checkpoints/best.pkl',
     # 'inference': True,
     'batch_size': 2000,
-    'device':'gpu',
+    'device': 'gpu',
 }

@@ -28,7 +28,7 @@ class mapping:
         for sentence in sentences:
             self.add_sentence(sentence)
 
-    def init(self, mapping_size=9999999999,debug=0):
+    def init(self, mapping_size=9999999999, debug=0):
         self.mapping_size = mapping_size
         self.items = list(self.mp.items())
         self.items.sort(key=lambda x: x[1], reverse=True)
@@ -49,10 +49,10 @@ class mapping:
         del self.mp
         if debug:
             self.freqs = {k: v / sum for k, v in self.freqs.items()}
-            _lst=sorted(list(self.freqs.items()),key=lambda x:x[1])
+            _lst = sorted(list(self.freqs.items()), key=lambda x: x[1])
             print(_lst[:20])
             print(_lst[-20:])
-            print('UNK:',self.freqs[1])
+            print('UNK:', self.freqs[1])
 
     def word_to_id(self, word):
         return torch.tensor(self.word2id.get(word, mapping.UNK))

@@ -1,8 +1,12 @@
 import random
 from torch.utils.data import Dataset
 
+
 class TxtDataset(Dataset):
-    def __init__(self, path_list,):
+    def __init__(
+        self,
+        path_list,
+    ):
         super().__init__()
         self.path_list = path_list
         assert isinstance(path_list, list)
@@ -18,6 +22,7 @@ class TxtDataset(Dataset):
 
     def __getitem__(self, idx):
         return self.data[idx]
+
 
 # class TxtDataset(Dataset):
 #     def __init__(

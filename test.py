@@ -9,6 +9,7 @@ try:
 except:
     ...
 
+
 def test_dataloader():
     test_dataloader = Dataloader(['dataset/test.txt'], 10, False)
     test_dataloader.reset()
@@ -40,7 +41,7 @@ def test_mapping():
     for data in dataloader:
         mp.add_sentences(data)
         # mp.add_sentences(tokenizer.cut(data))
-    mp.init(mapping_size,debug=1)
+    mp.init(mapping_size, debug=1)
     mp.dump('dump/mapping_comments_3000.data')
     # mp=mapping.load('dump/mapping_comments_3000.data')
     # print(mp.mapping_from_sentences(data['input']).cuda())
