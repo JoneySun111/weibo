@@ -2,10 +2,8 @@ import os
 import sys
 from argparse import ArgumentParser
 
-from runner.base_runner import *
-from runner.ngram_runner import *
-from util.utils import *
-from util.config import *
+from runner import *
+from util import *
 
 o_path = os.getcwd()
 sys.path.append(o_path)
@@ -31,6 +29,10 @@ def main():
     cfg = Config.fromfile(args.config)
     cfg.update(Config.from_list(unknown))
     print(cfg)
+    if cfg.get('device') == 'gpu':
+        ...
+        # os.environ["CUDA_LAUNCH_BLOCKING"] = '1'
+        # os.environ["CUDA_VISIBLE_DEVICES"] = '0'
     if args.dump_config:
         cfg.dump("./complete_config.py")
 

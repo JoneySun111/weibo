@@ -4,7 +4,7 @@ import torch
 import random
 import sys
 
-# sys.path.append('..')
+sys.path.append('..')
 from mapping import *
 from util import *
 
@@ -44,17 +44,17 @@ class SkipGramDataset(torch.utils.data.Dataset):
             self.mapping.word_freqs, self.n_samples * pos_words.shape[0], True
         )
 
-
-        pos_words=resize0(pos_words,0,self.window_size*2)
-        neg_words=resize0(neg_words,0,self.n_samples * pos_words.shape[0])
+        pos_words = resize0(pos_words, 0, self.window_size * 2)
+        neg_words = resize0(neg_words, 0, self.n_samples * pos_words.shape[0])
         return center_word, pos_words, neg_words
 
 
 if __name__ == '__main__':
     dataset = SkipGramDataset(
-        ['dataset/comments_test.data'], mapping_path='dump/mapping_comments_3000.data'
+        ['../dataset/comments_test.data'], mapping_path='../dump/mapping_comments_3000.data'
     )
-    dataloader1=torch.utils.data.DataLoader(dataset=dataset, batch_size=2, shuffle=True)
+    dataloader1 = torch.utils.data.DataLoader(dataset=dataset, batch_size=2, shuffle=True)
+    print(dataloader1.next())
     # for x in dataloader1:
     #     print(x)
     # print(dataset[1])

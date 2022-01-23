@@ -24,7 +24,7 @@ def resize0(t, dim=0, target_size=0):
         return t
     shape = list(t.shape)
     shape[dim] = target_size - shape[dim]
-    return torch.concat((t, torch.empty(shape, dtype=t.dtype, device=t.device)), dim)
+    return torch.concat((t, torch.zeros(shape, dtype=t.dtype, device=t.device)), dim)
 
 
 if __name__ == '__main__':

@@ -14,6 +14,6 @@
     # 'test':True,
     # 'checkpoint': 'checkpoints/best.pkl',
     # 'inference': True,
-    'batch_size': 2000,
+    'batch_size': 1000,
     'device': 'gpu',
 }

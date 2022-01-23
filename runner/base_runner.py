@@ -1,10 +1,8 @@
 from model import *
 from util.utils import *
 from util.log import *
-from dataloader.dataloader import *
-from dataloader.ngram_dataloader import *
-from transform.base_tokenizer import *
-from transform.base_transform import *
+from dataloader import *
+from transform import *
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -19,6 +17,7 @@ class BaseRunner:
         self.max_epoch = int(cfg.get("max_epoch", 10))
         self.max_iters = int(cfg.get("max_iters", 100000))
         self.log_interval = int(cfg.get("log_interval", 100))
+        self.name = cfg.get('name', 'model')
         self.device = cfg.get("device", "cpu")
         if self.device == "gpu":
             self.device = "cuda:0"
@@ -27,7 +26,7 @@ class BaseRunner:
             self.load_checkpoint(cfg.get("checkpoint"))
         self.save_after_epoch = cfg.get("save_after_epoch", False)
         self.batch_size = int(cfg.get("batch_size", 10))
-        self.transform = eval(self.cfg.get("transform", ""))
+        self.transform = eval(self.cfg.get("transform", "0"))
         if self.cfg.get("test", None):
             self.test_embedding("None")
             return
@@ -35,7 +34,7 @@ class BaseRunner:
             assert "checkpoint" in self.cfg, "inference mode must has checkpoint"
             return
 
-        self.criterion = eval(cfg.get("criterion"))
+        self.criterion = eval(cfg.get("criterion", '0'))
         self.init_dataloader()
         self.log = log(self.log_interval)
         self.optimizer = eval(cfg.get("optimizer"))(self.model.parameters())
@@ -132,7 +131,7 @@ class BaseRunner:
 
     def after_train_epoch(self):
         if self.save_after_epoch:
-            self.save_checkpoint("checkpoints/epoch_{}.pkl".format(self.epoch))
+            self.save_checkpoint("checkpoints/{}_epoch_{}.pkl".format(self.name, self.epoch))
         ...
 
     def before_train_iter(self):
@@ -165,7 +164,7 @@ class BaseRunner:
         acc = torch.true_divide(self.correct, self.total)
         if acc > self.best:
             self.best = acc
-            self.save_checkpoint("checkpoints/best.pkl")
+            self.save_checkpoint("checkpoints/{}_best.pkl".format(self.name))
         self.log.add_val_log("acc", acc)
         self.log.log_valid()
 

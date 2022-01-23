@@ -9,8 +9,8 @@ class SkipGramModel(nn.Module):
         super(SkipGramModel, self).__init__()
         self.vocab_size = vocab_size
         self.embedding_size = embedding_size
-        self.input_emb = nn.Embedding(vocab_size, embedding_size)
-        self.output_emb = nn.Embedding(vocab_size, embedding_size)
+        self.input_emb = nn.Embedding(vocab_size, embedding_size, padding_idx=mapping.PAD)
+        self.output_emb = nn.Embedding(vocab_size, embedding_size, padding_idx=mapping.PAD)
         self.input_emb.weight.data.uniform_(-1, 1)
         self.output_emb.weight.data.uniform_(-1, 1)
         # initrange = 0.5 / self.embedding_size
@@ -33,4 +33,4 @@ class SkipGramModel(nn.Module):
         log_neg = F.logsigmoid(neg_dot).sum(1)
 
         loss = -(log_pos + log_neg)
-        return loss
+        return loss.sum(0)

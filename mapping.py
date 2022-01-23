@@ -98,10 +98,10 @@ class mapping:
         self.freqs = {k: v ** T for k, v in self.freqs.items()}
         tot = sum(self.freqs.values())
         self.freqs = {k: v / tot for k, v in self.freqs.items()}
-        self.word_freqs=[0]*(max(self.freqs.keys())+1)
-        for k,v in self.freqs.items():
-            self.word_freqs[k]=v
-        self.word_freqs=torch.tensor(self.word_freqs)
+        self.word_freqs = [0] * (max(self.freqs.keys()) + 1)
+        for k, v in self.freqs.items():
+            self.word_freqs[k] = v
+        self.word_freqs = torch.tensor(self.word_freqs)
 
     def dump(self, path):
         # del self.mp
