@@ -7,12 +7,15 @@ class SkipGramDataset(torch.utils.data.Dataset):
         self.path_list=path_list
         assert isinstance(path_list,list)
         self.data=[]
+        self.idx=[]
         for file in path_list:
             with open(file,'r')as f:
                 now=f.readlines()
                 now=list(map(lambda x:x.strip(),now))
-                # now=list(filter(lambda x:len(x.strip())>0,now))
                 self.data+=now
+        for i,line in enumerate(self.data):
+            self.idx.append((i,j) for j in range(len(line)))
+
 
     def __len__(self):
         return len(self.data)
@@ -20,7 +23,8 @@ class SkipGramDataset(torch.utils.data.Dataset):
     def __getitem__(self, idx):
         return self.data[idx]
 
-# dataset=SkipGramDataset(['dataset/comments.log'])
+dataset=SkipGramDataset(['dataset/comments.data'])
+print(dataset.idx[:2])
 # print(dataset[1])
 # print(len(dataset[1]))
 # random.shuffle(dataset.data)
