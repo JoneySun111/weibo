@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
+from turtle import pos
 import torch
 import random
 import sys
 
-sys.path.append('..')
+# sys.path.append('..')
 from mapping import *
+from util import *
 
 
 class SkipGramDataset(torch.utils.data.Dataset):
@@ -15,6 +17,7 @@ class SkipGramDataset(torch.utils.data.Dataset):
         self.n_samples = n_samples
         assert isinstance(path_list, list)
         self.mapping = mapping.load(mapping_path)
+        self.mapping.pre_work(0.75)
         self.data = []
         self.idx = []
         for file in path_list:
@@ -30,24 +33,30 @@ class SkipGramDataset(torch.utils.data.Dataset):
 
     def __getitem__(self, idx):
         x, y = self.idx[idx]
-        print(x, y)
         center_word = self.data[x][y]
+        center_word = self.mapping.word_to_id(center_word)
         pos_words = (
             self.data[x][max(0, y - self.window_size) : y]
             + self.data[x][y + 1 : min(len(self.data[x]), y + 1 + self.window_size)]
         )
-        return center_word, pos_words
+        pos_words = self.mapping.mapping_from_sentences(pos_words)
+        neg_words = torch.multinomial(
+            self.mapping.word_freqs, self.n_samples * pos_words.shape[0], True
+        )
+
+
+        pos_words=resize0(pos_words,0,self.window_size*2)
+        neg_words=resize0(neg_words,0,self.n_samples * pos_words.shape[0])
+        return center_word, pos_words, neg_words
 
 
 if __name__ == '__main__':
     dataset = SkipGramDataset(
-        ['../dataset/comments.data'], mapping_path='../dump/mapping_comments_3000.data'
+        ['../dataset/comments_test.data'], mapping_path='../dump/mapping_comments_3000.data'
     )
-    print(len(dataset))
-    print(dataset.data[0])
-    print(dataset.data[1])
-    for i in range(10):
-        print(dataset[i])
+    dataloader1=torch.utils.data.DataLoader(dataset=dataset, batch_size=2, shuffle=True)
+    # for x in dataloader1:
+    #     print(x)
     # print(dataset[1])
     # print(len(dataset[1]))
     # random.shuffle(dataset.data)

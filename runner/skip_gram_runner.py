@@ -8,7 +8,7 @@ from dataloader import *
 class SkipGramRunner(BaseRunner):
     def __init__(self, cfg):
         super().__init__(cfg)
-
+    
     def run(self):
         self.model.train()
         self.before_run()
@@ -35,12 +35,6 @@ class SkipGramRunner(BaseRunner):
             self.target = batch_data['label'].to(self.device)
             self.output = self.model(batch_data.get('input')).to(self.device)
             self.after_train_iter()
-            # if self.iter%1000==0:
-            #     for i in range(10):
-            #         print(super().test_embedding())
-            #     print(super().test_embedding('开心'))
-            #     print(super().test_embedding('我'))
-            #     print(super().test_embedding('高兴'))
 
         self.after_run()
 
