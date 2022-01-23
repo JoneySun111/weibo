@@ -4,7 +4,7 @@
     'model': 'SkipGramModel(3000,40)',
     'log_interval': 100,
     'train_dataloader': "torch.utils.data.DataLoader(dataset="
-    "SkipGramDataset(['dataset/comments_test.data'], mapping_path='dump/mapping_comments_3000.data')"
+    "SkipGramDataset(['dataset/comments_train.data'], mapping_path='dump/mapping_comments_3000.data')"
     ", batch_size=batch_size, shuffle=True)",
     'valid_dataloader': "torch.utils.data.DataLoader(dataset="
     "SkipGramDataset(['dataset/comments_test.data'], mapping_path='dump/mapping_comments_3000.data')"
@@ -17,8 +17,8 @@
     'save_after_epoch': True,
     'name': 'skipgram',
     # 'test':True,
-    # 'checkpoint': 'checkpoints/best.pkl',
+    'checkpoint': 'checkpoints/skipgram_epoch_1.pkl',
     # 'inference': True,
-    'batch_size': 1000,
+    'batch_size': 100,
     'device': 'gpu',
 }

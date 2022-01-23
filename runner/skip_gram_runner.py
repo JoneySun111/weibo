@@ -19,6 +19,7 @@ class SkipGramRunner(BaseRunner):
         self.before_run()
         self.before_train_epoch()
         while self.epoch <= self.max_epoch:
+            self.after_train_epoch()
             for batch_data in self.train_dataloader:
                 assert batch_data is not None, "batch_data error"
                 self.before_train_iter()
@@ -45,7 +46,6 @@ class SkipGramRunner(BaseRunner):
             self.valid()
             self.inner_iter = 0
             self.epoch += 1
-            self.before_train_epoch()
 
         self.after_run()
 
@@ -87,3 +87,27 @@ class SkipGramRunner(BaseRunner):
 
         self.after_val_epoch()
         self.model.train()
+    
+    def test_embedding(self, key="None"):
+        def dis(a, b):
+            sum = (a - b) ** 2
+            sum = sum.sum(0).sum(0).sum(0) ** 0.5
+            return sum
+
+        mp = mapping.load('dump/mapping_comments_3000.data')
+        embedding = self.model.input_emb
+        if key == "None" or mp.word_to_id(key) == mapping.UNK:
+            key = mp.id_to_word(random.randint(0, len(mp.word2id)))
+        res = {"key": key}
+        # key = mp.word_to_id(key)
+        key = mp.mapping_from_sentences(key).to(self.device)
+        key = embedding(key)
+        arr = []
+        for k, v in mp.word2id.items():
+            now = mp.word_to_id(k).to(self.device)
+            now = embedding(now)
+            arr.append((k, dis(now, key)))
+        arr = sorted(arr, key=lambda x: x[1])
+        res["latest"] = arr[:10]
+        print(res)
+        return res
