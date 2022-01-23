@@ -23,7 +23,7 @@ max_word_size = 100
 
 
 def test_mapping():
-    dataset = TxtDataset(['dataset/comments_test.data'])
+    dataset = TxtDataset(['dataset/comments.data'])
     dataloader = torch.utils.data.DataLoader(dataset=dataset, batch_size=batch_size, shuffle=True)
     print(len(dataset))
 

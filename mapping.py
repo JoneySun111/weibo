@@ -47,8 +47,8 @@ class mapping:
             self.freqs[x] += value
             sum += value
         del self.mp
+        self.freqs = {k: v / sum for k, v in self.freqs.items()}
         if debug:
-            self.freqs = {k: v / sum for k, v in self.freqs.items()}
             _lst = sorted(list(self.freqs.items()), key=lambda x: x[1])
             print(_lst[:20])
             print(_lst[-20:])
