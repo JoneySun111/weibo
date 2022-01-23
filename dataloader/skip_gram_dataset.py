@@ -52,7 +52,7 @@ class SkipGramDataset(torch.utils.data.Dataset):
 
 if __name__ == '__main__':
     dataset = SkipGramDataset(
-        ['../dataset/comments_test.data'], mapping_path='../dump/mapping_comments_3000.data'
+        ['dataset/comments_test.data'], mapping_path='dump/mapping_comments_3000.data'
     )
     dataloader1=torch.utils.data.DataLoader(dataset=dataset, batch_size=2, shuffle=True)
     # for x in dataloader1:
