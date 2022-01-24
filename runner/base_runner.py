@@ -8,6 +8,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from torch import optim
 import math, random
+import sys
 
 
 class BaseRunner:
@@ -29,7 +30,8 @@ class BaseRunner:
         self.transform = eval(self.cfg.get("transform", "0"))
         if self.cfg.get("test", None):
             self.test_embedding("None")
-            return
+            sys.exit(0)
+
         if self.cfg.get("inference", None):
             assert "checkpoint" in self.cfg, "inference mode must has checkpoint"
             return

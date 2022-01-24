@@ -16,9 +16,9 @@
     # 'criterion': 'F.nll_loss',
     'save_after_epoch': True,
     'name': 'skipgram',
-    # 'test':True,
-    'checkpoint': 'checkpoints/skipgram_epoch_1.pkl',
+    'test':True,
+    # 'checkpoint': 'checkpoints/skipgram_epoch_4.pkl',
     # 'inference': True,
-    'batch_size': 100,
+    'batch_size': 5000,
     'device': 'gpu',
 }

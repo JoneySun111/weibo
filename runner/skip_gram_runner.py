@@ -17,9 +17,8 @@ class SkipGramRunner(BaseRunner):
     def run(self):
         self.model.train()
         self.before_run()
-        self.before_train_epoch()
         while self.epoch <= self.max_epoch:
-            self.after_train_epoch()
+            self.before_train_epoch()
             for batch_data in self.train_dataloader:
                 assert batch_data is not None, "batch_data error"
                 self.before_train_iter()
@@ -35,12 +34,12 @@ class SkipGramRunner(BaseRunner):
                 }
                 self.loss = self.model(center_word, pos_words, neg_words)
                 self.after_train_iter()
-                if self.iter == 10000:
-                    self.save_checkpoint(
-                        self.save_checkpoint(
-                            "checkpoints/{}_epoch_{}.pkl".format(self.name, self.epoch)
-                        )
-                    )
+                # if self.iter == 10000:
+                # self.save_checkpoint(
+                #     self.save_checkpoint(
+                #         "checkpoints/{}_epoch_{}.pkl".format(self.name, self.epoch)
+                #     )
+                # )
 
             self.after_train_epoch()
             self.valid()
@@ -87,7 +86,7 @@ class SkipGramRunner(BaseRunner):
 
         self.after_val_epoch()
         self.model.train()
-    
+
     def test_embedding(self, key="None"):
         def dis(a, b):
             sum = (a - b) ** 2
