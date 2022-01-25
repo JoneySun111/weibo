@@ -186,22 +186,24 @@ class BaseRunner:
 
     def test_embedding(self, key="None"):
         def dis(a, b):
+            return torch.cosine_similarity(a, b, dim=0)
             sum = (a - b) ** 2
             sum = sum.sum(0) ** 0.5
             return sum
 
         mp = self.transform[-1].mp
-        embedding = self.model.embedding
+        embedding = self.model.embedding.to(self.device)
         if key == "None" or mp.word_to_id(key) == mapping.UNK:
             key = mp.id_to_word(random.randint(0, len(mp.word2id)))
         res = {"key": key}
-        key = self.transform[-1]([[key]])
-        key = embedding(key)[0][0]
+        key = mp.word_to_id(key).to(self.device)
+        key = embedding(key)
         arr = []
         for k, v in mp.word2id.items():
-            now = self.transform[-1]([[k]])
-            now = embedding(now)[0][0]
+            now = mp.word_to_id(k).to(self.device)
+            now = embedding(now)
             arr.append((k, dis(now, key)))
-        arr = sorted(arr, key=lambda x: x[1])
+        arr = sorted(arr, key=lambda x: x[1], reverse=True)
         res["latest"] = arr[:10]
+        print(res)
         return res
