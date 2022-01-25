@@ -1,4 +1,4 @@
-from time import time
+from time import time, sleep
 import torch
 from mapping import *
 from dataloader import *
@@ -17,7 +17,7 @@ def test_dataloader():
         print(test_dataloader.next())
 
 
-batch_size = 10
+batch_size = 100
 mapping_size = 3000
 max_word_size = 100
 
@@ -37,12 +37,15 @@ def test_mapping():
     # print(mp.mapping_from_sentences(data['input']))
     # print(mp.get_sentences(mp.mapping_from_sentences(data['input'])))
 
-    # tokenizer = MiNLPTokenizer(granularity='fine')
-    for data in dataloader:
-        mp.add_sentences(data)
-        # mp.add_sentences(tokenizer.cut(data))
+    tokenizer = MiNLPTokenizer(granularity='fine')
+    for i, data in enumerate(dataloader):
+        # mp.add_sentences(data)
+        mp.add_sentences(tokenizer.cut(data))
+        if i % 10 == 1:
+            print(f'{i} % {len(dataloader)}')
+            sleep(0.4)
     mp.init(mapping_size, debug=1)
-    mp.dump('dump/mapping_comments_3000.data')
+    mp.dump('dump/tokenizer_mapping_comments_3000.data')
     # mp=mapping.load('dump/mapping_comments_3000.data')
     # print(mp.mapping_from_sentences(data['input']).cuda())
     # print(mp.get_idx())

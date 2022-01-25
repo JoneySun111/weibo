@@ -15,10 +15,10 @@
     'optimizer': 'optim.Adam',
     # 'criterion': 'F.nll_loss',
     'save_after_epoch': True,
-    'name': 'skipgram',
-    'test':True,
+    'name': 'skipgram_lr_2e-5',
+    # 'test':True,
     # 'checkpoint': 'checkpoints/skipgram_epoch_4.pkl',
     # 'inference': True,
-    'batch_size': 5000,
+    'batch_size': 3,
     'device': 'cpu',
 }
