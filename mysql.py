@@ -31,7 +31,7 @@ class mysql:
     def query_all_users(
         cls,
     ):
-        sql = 'select* from user'
+        sql = 'select* from user order by rand()'
         return cls.do_sql(sql)
 
     @classmethod
@@ -104,7 +104,10 @@ class mysql:
 
     @classmethod
     def add_blog(cls, text, **kwargs):
+        # select COLUMN_NAME from information_schema.COLUMNS where table_name = 'blog' and table_schema = 'Weibo';
+        keys = ('id', 'text', 'user_id', 'tool', 'time', 'is_original', 'up', 'retweet', 'comment')
         kwargs['text'] = text
+        kwargs = dict(filter(lambda x: x[0] in keys, kwargs.items()))
         cursor = cls.db.cursor()
         sql = 'insert into blog {} values{}'.format(
             str(tuple(kwargs.keys())).replace("'", '`'), tuple(kwargs.values())
@@ -139,8 +142,10 @@ class mysql:
 
     @classmethod
     def add_comment(cls, id, text, **kwargs):
+        keys = ('id', 'cid', 'mid', 'user_id', 'nickname', 'text', 'time', 'tool', 'up', 'label')
         kwargs['id'] = id
         kwargs['text'] = text
+        kwargs = dict(filter(lambda x: x[0] in keys, kwargs.items()))
         cursor = cls.db.cursor()
         sql = 'insert into comment {} values{}'.format(
             str(tuple(kwargs.keys())).replace("'", '`'), tuple(kwargs.values())

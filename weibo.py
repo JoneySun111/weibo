@@ -120,7 +120,7 @@ class Weibo:
                 html = requests.get(url).content
                 Weibo.cnt += 0.1
             soup = BeautifulSoup(html, 'html.parser')  # 文档对象
-            if Weibo.cnt > 10:
+            if Weibo.cnt > 6:
                 time.sleep(3)
                 Weibo.cnt = 0
             return soup
