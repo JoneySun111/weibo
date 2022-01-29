@@ -54,7 +54,7 @@ def write_blogs(userid, max_pages=10, _write_comments=False):
                 blogs = weibo.get_mblogs(user_id, i)['data']
                 mysql.add_blogs(blogs=blogs)
                 if _write_comments:
-                    write_comments(blogs, 5)
+                    write_comments(blogs, 6)
         except Exception as e:
             print('{} error: {}'.format(user_id, e))
 
@@ -107,7 +107,7 @@ def write_comments(blogs, max_pages=20):
 
 
 if __name__ == '__main__':
-    write_blogs([x[0] for x in mysql.query_all_users()], max_pages=3, _write_comments=True)
+    write_blogs([x[0] for x in mysql.query_all_users()], max_pages=5, _write_comments=True)
     # fill_user_info([x[0] for x in mysql.query_all_users()])
     # write_blogs([x[0] for x in mysql.query_all_users()],3)
     # expand_user_by_fans([x[0] for x in mysql.query_all_users()],2)

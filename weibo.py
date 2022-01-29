@@ -287,7 +287,7 @@ class Weibo:
             ids = [
                 x.attrs['href'].split('/')[-1] for x in soup.select('a[class="wb_url"]')
             ]  # 可能不是数字
-            # ids=[x.attrs['uid'] for x in soup.select('a[action-type="userFollow"]')]
+            # ids=[x.attrs['uid'] for x in soup.select('a[action-type="deFollow"]')]
             images = [x.attrs['src'] for x in soup.select('div[class="avator"] a img')]
             for i in range(len(nicknames)):
                 arr.append(
@@ -631,13 +631,32 @@ class Weibo:
             'code': 0,
         }
 
+    def search_user(self, nickname):
+        url = 'https://m.weibo.cn/api/container/getIndex?containerid=100103type%3D3%26q%3D{}%26t%3D0&page_type=searchall'.format(
+            nickname
+        )
+        s = self.html_str(url)
+        obj_json = json.loads(s)
+        data = []
+        if obj_json.get('ok', 0) != 1:
+            return {'code': 1, 'data': data, 'count': len(data)}
+        obj = obj_json['data']['cards'][-1]
+        data = []
+        for x in obj['card_group']:
+            user = x['user']
+            user['scheme'] = x['scheme']
+            user['str'] = user.get('verified_reason', user.get('description', ''))
+            data.append(user)
+        return {'data': data, 'count': len(data), 'code': 0}
 
-weibo = Weibo()
+
+# weibo = Weibo()
+# weibo.search_user('zkl小同学')
 # print(weibo.get_fans_m(5319509655))
 # print(weibo.get_background(5319509655))
 # weibo.get_follows(5319509655)
 # print(weibo.get_mblogs(5319509655,17))
-print(weibo.get_hot())
+# print(weibo.get_hot())
 # mid = weibo.search("立陶宛求助欧盟制裁中国")['data'][0]['mid']
 # print(weibo.get_comments_m(4711323370260659,2))
 # print(weibo.get_comments(id))

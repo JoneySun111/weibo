@@ -12,6 +12,8 @@ CORS(app, supports_credentials=True)
 
 
 def return_data(arr):
+    if isinstance(arr,dict):
+        return arr
     return {
         'count': len(arr),
         'code': 0,
@@ -98,7 +100,7 @@ def userhome(user_id):
 @app.route('/search_user/<nickname>', methods=['GET', 'POST'])
 def search_user(nickname):
     weibo = Weibo()
-    return return_data(weibo.get_user_id(nickname))
+    return return_data(weibo.search_user(nickname))
 
 
 @app.route('/get_fans', methods=['GET', 'POST'])
