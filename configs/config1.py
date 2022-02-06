@@ -12,7 +12,9 @@
     'criterion': 'F.nll_loss',
     'save_after_epoch': True,
     # 'test':True,
-    'checkpoint': 'checkpoints/best.pkl',
+    # 'checkpoint': 'checkpoints/best.pkl',
     # 'inference': True,
     'batch_size': 100,
+    'device': 'cpu',
+    'name': 'base',
 }

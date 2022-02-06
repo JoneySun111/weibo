@@ -508,6 +508,7 @@ class Weibo:
                     'up': blog['attitudes_count'],
                     'user_id': user['id'],
                     'nickname': user['screen_name'],
+                    'profile_image_url': user['profile_image_url'],
                     'text': BeautifulSoup(blog['text'], 'html.parser').text.replace(
                         '#{}#'.format(key), ''
                     ),
@@ -535,6 +536,7 @@ class Weibo:
                 {
                     'user_id': user['id'],
                     'nickname': user['screen_name'],
+                    'profile_image_url': user['profile_image_url'],
                     'mid': mblog['mid'],
                     'retweet': mblog['reposts_count'],
                     'comment': mblog['comments_count'],
@@ -649,8 +651,87 @@ class Weibo:
             data.append(user)
         return {'data': data, 'count': len(data), 'code': 0}
 
+    def search_realtime(self, keyword, page=1):
+        url = 'https://m.weibo.cn/api/container/getIndex?containerid=100103type%3D61%26q%3D{}%26t%3D0&page_type=searchall&page={}'.format(
+            keyword, page
+        )
+        s = self.html_str(url)
+        obj_json = json.loads(s)
+        data = []
+        if obj_json.get('ok', 0) != 1:
+            return {'code': 1, 'data': data, 'count': len(data)}
+        obj = obj_json['data']
+        for blog in obj['cards']:
+            if 'mblog' not in blog:
+                continue
+            mblog = blog['mblog']
+            user = mblog['user']
+            data.append(
+                {
+                    'user_id': user['id'],
+                    'nickname': user['screen_name'],
+                    'profile_image_url': user['profile_image_url'],
+                    'mid': mblog['mid'],
+                    'retweet': mblog['reposts_count'],
+                    'comment': mblog['comments_count'],
+                    'up': mblog['attitudes_count'],
+                    'tool': mblog['source'],
+                    'scheme': blog['scheme'],
+                    'text': BeautifulSoup(mblog['text'], 'html.parser').text,
+                    'time': Weibo.get_publish_time(mblog['created_at']),
+                    'show_time': mblog['created_at'],
+                }
+            )
+        return {
+            'data': data,
+            'count': len(data),
+            'code': 0,
+            'page': page,
+            'total': obj['cardlistInfo']['total'],
+        }
+
+    def search_hot(self, keyword, page=1):
+        url = 'https://m.weibo.cn/api/container/getIndex?containerid=100103type%3D60%26q%3D{}%26t%3D0&page_type=searchall&page={}'.format(
+            keyword, page
+        )
+        s = self.html_str(url)
+        obj_json = json.loads(s)
+        data = []
+        if obj_json.get('ok', 0) != 1:
+            return {'code': 1, 'data': data, 'count': len(data)}
+        obj = obj_json['data']
+        for blog in obj['cards']:
+            if 'mblog' not in blog:
+                continue
+            mblog = blog['mblog']
+            user = mblog['user']
+            data.append(
+                {
+                    'user_id': user['id'],
+                    'nickname': user['screen_name'],
+                    'profile_image_url': user['profile_image_url'],
+                    'mid': mblog['mid'],
+                    'retweet': mblog['reposts_count'],
+                    'comment': mblog['comments_count'],
+                    'up': mblog['attitudes_count'],
+                    'tool': mblog['source'],
+                    'scheme': blog['scheme'],
+                    'text': BeautifulSoup(mblog['text'], 'html.parser').text,
+                    'time': Weibo.get_publish_time(mblog['created_at']),
+                    'show_time': mblog['created_at'],
+                }
+            )
+        return {
+            'data': data,
+            'count': len(data),
+            'code': 0,
+            'page': page,
+            'total': obj['cardlistInfo']['total'],
+        }
+
 
 # weibo = Weibo()
+# print(weibo.search_hot('字节跳动', 1))
 # weibo.search_user('zkl小同学')
 # print(weibo.get_fans_m(5319509655))
 # print(weibo.get_background(5319509655))

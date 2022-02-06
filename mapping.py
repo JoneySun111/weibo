@@ -65,7 +65,7 @@ class mapping:
             lst.append(self.word_to_id(word))
         if self.max_word_size <= 0:
             return torch.stack(lst)
-        return torch.stack(lst + [mapping.PAD] * (self.max_word_size - len(lst)))
+        return torch.stack(lst + [torch.tensor(mapping.PAD)] * (self.max_word_size - len(lst)))
 
     def mapping_from_sentences(self, sentences):
         lst = []
