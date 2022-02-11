@@ -205,5 +205,6 @@ class BaseRunner:
             arr.append((k, dis(now, key)))
         arr = sorted(arr, key=lambda x: x[1], reverse=True)
         res["latest"] = arr[:10]
+        res["farest"] = arr[-10:]
         print(res)
         return res
