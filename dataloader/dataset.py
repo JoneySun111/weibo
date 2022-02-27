@@ -24,6 +24,30 @@ class TxtDataset(Dataset):
         return self.data[idx]
 
 
+class OldDataset(Dataset):
+    def __init__(
+        self,
+        path_list,
+    ):
+        super().__init__()
+        self.path_list = path_list
+        assert isinstance(path_list, list)
+        self.data = []
+        self.label = []
+        for file in path_list:
+            with open(file, 'r', encoding='utf8') as f:
+                now = f.readlines()
+                now = list(map(lambda x: x.strip(), now))
+                self.label += list(map(lambda x: x.split(',')[1], now))
+                self.data += list(map(lambda x: ','.join(x.split(',')[2:]), now))
+
+    def __len__(self):
+        return len(self.data)
+
+    def __getitem__(self, idx):
+        return self.data[idx], int(self.label[idx])
+
+
 # class TxtDataset(Dataset):
 #     def __init__(
 #         self,

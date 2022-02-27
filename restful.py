@@ -174,7 +174,7 @@ runner = None
 def inference_data(data):
     global runner
     if runner is None:
-        cfg = Config.fromfile('configs/config1.py')
+        cfg = Config.fromfile('configs/cnn_inference.py')
         cfg.update(Config.from_list(['--inference', '1']))
         runner = BaseRunner(cfg)
     output = runner.inference(data)
@@ -197,7 +197,7 @@ def inference_datas():
 
     global runner
     if runner is None:
-        cfg = Config.fromfile('configs/config1.py')
+        cfg = Config.fromfile('configs/cnn_inference.py')
         cfg.update(Config.from_list(['--inference', '1']))
         runner = BaseRunner(cfg)
     data, count = json.loads(get('data')), get('count', 0)
@@ -213,7 +213,7 @@ def inference_datas():
 def embedding(data):
     global runner
     if runner is None:
-        cfg = Config.fromfile('configs/config1.py')
+        cfg = Config.fromfile('configs/cnn_inference.py')
         cfg.update(Config.from_list(['--inference', '1']))
         runner = BaseRunner(cfg)
     return str(runner.test_embedding(data))

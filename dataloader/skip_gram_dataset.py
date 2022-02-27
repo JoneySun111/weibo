@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-from turtle import pos
 import torch
 import random
 import sys
+from dataloader import *
 
 sys.path.append('..')
 from mapping import *
@@ -20,11 +20,14 @@ class SkipGramDataset(torch.utils.data.Dataset):
         self.mapping.pre_work(0.75)
         self.data = []
         self.idx = []
-        for file in path_list:
-            with open(file, 'r', encoding='utf8') as f:
-                now = f.readlines()
-                now = list(map(lambda x: x.strip(), now))
-                self.data += now
+        self.dataset = OldDataset(path_list)
+        for data, _label in self.dataset:
+            self.data.append(data)
+        # for file in path_list:
+        #     with open(file, 'r', encoding='utf8') as f:
+        #         now = f.readlines()
+        #         now = list(map(lambda x: x.strip(), now))
+        #         self.data += now
         for i, line in enumerate(self.data):
             self.idx += [(i, j) for j in range(len(line) - window_size)]
 

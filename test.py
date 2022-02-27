@@ -23,10 +23,9 @@ max_word_size = 100
 
 
 def test_mapping():
-    dataset = TxtDataset(['dataset/comments.data'])
+    dataset = OldDataset(['dataset/train.txt', 'dataset/test.txt'])
     dataloader = torch.utils.data.DataLoader(dataset=dataset, batch_size=batch_size, shuffle=True)
     print(len(dataset))
-
     # mp=mapping.load('dump/tokenizer_mapping_comments_3000.data')
     # print(len(mp.mp))
     # print(list(mp.mp.items())[:30])
@@ -37,15 +36,16 @@ def test_mapping():
     # print(mp.mapping_from_sentences(data['input']))
     # print(mp.get_sentences(mp.mapping_from_sentences(data['input'])))
 
-    tokenizer = MiNLPTokenizer(granularity='fine')
+    # tokenizer = MiNLPTokenizer(granularity='fine')
     for i, data in enumerate(dataloader):
-        # mp.add_sentences(data)
-        mp.add_sentences(tokenizer.cut(data))
+        data = data[0]
+        mp.add_sentences(data)
         if i % 10 == 1:
             print(f'{i} % {len(dataloader)}')
-            sleep(0.4)
+            # sleep(0.4)
     mp.init(mapping_size, debug=1)
-    mp.dump('dump/tokenizer_mapping_comments_3000.data')
+    print(mp.get_sentence(range(0, 20)))
+    mp.dump('dump/mapping_3000.data')
     # mp=mapping.load('dump/mapping_comments_3000.data')
     # print(mp.mapping_from_sentences(data['input']).cuda())
     # print(mp.get_idx())

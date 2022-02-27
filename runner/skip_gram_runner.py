@@ -90,9 +90,6 @@ class SkipGramRunner(BaseRunner):
     def test_embedding(self, key="None"):
         def dis(a, b):
             return torch.cosine_similarity(a, b, dim=0)
-            sum = (a - b) ** 2
-            sum = sum.sum(0).sum(0).sum(0) ** 0.5
-            return sum
 
         mp = mapping.load('dump/mapping_comments_3000.data')
         embedding = self.model.input_emb

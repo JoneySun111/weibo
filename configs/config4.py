@@ -14,7 +14,7 @@
     #     "BaseTransform('dump/tokenizer_mapping_3000.data',max_word_size=0)," "]",
     'optimizer': 'optim.Adam',
     # 'criterion': 'F.nll_loss',
-    'save_after_epoch': True,
+    # 'save_after_epoch': True,
     'name': 'skipgram_lr_2e-5',
     # 'test':True,
     # 'checkpoint': 'checkpoints/skipgram_epoch_4.pkl',
