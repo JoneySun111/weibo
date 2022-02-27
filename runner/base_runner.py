@@ -25,7 +25,6 @@ class BaseRunner:
         self.model = eval(cfg.get("model")).to(self.device)
         if self.cfg.get("checkpoint", None):
             self.load_checkpoint(cfg.get("checkpoint"))
-            self.model=self.model.to(self.device)
         self.save_after_epoch = cfg.get("save_after_epoch", False)
         self.batch_size = int(cfg.get("batch_size", 10))
         self.transform = eval(self.cfg.get("transform", "0"))
@@ -182,7 +181,7 @@ class BaseRunner:
         torch.save(self.model, path)
 
     def load_checkpoint(self, path):
-        self.model = torch.load(path)
+        self.model = torch.load(path,map_location=torch.device(self.device))
         print("load_checkpoint from {}".format(path))
 
     def test_embedding(self, key="None"):
