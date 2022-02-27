@@ -13,6 +13,7 @@ class CNNModel(nn.Module):
             self.embedding_size = self.embedding.weight.data.shape[-1]
             print(f'load embedding from {chkpt_path} success, embedding_size={self.embedding_size}')
         except:
+            print(f'load embedding from {chkpt_path} fail')
             ...
         self.conv1 = nn.Conv2d(
             in_channels=1,
