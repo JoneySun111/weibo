@@ -8,7 +8,7 @@ import datetime
 
 
 app = Flask(__name__)
-CORS(app, supports_credentials=True)
+CORS(app, resources=r'/*')
 
 
 def return_data(arr):
