@@ -7,7 +7,7 @@ import torch.nn.functional as F
 class CNNModel(nn.Module):
     def __init__(self, out_channels, chkpt_path=''):
         super(CNNModel, self).__init__()
-        self.max_word_size = 20
+        self.embedding = 40
         try:
             self.embedding = torch.load(chkpt_path).input_emb
             self.embedding_size = self.embedding.weight.data.shape[-1]
