@@ -10,6 +10,8 @@ class CNNModel(nn.Module):
         self.embedding_size = 40
         try:
             self.embedding = torch.load(chkpt_path).input_emb
+            self.embedding.requires_grad = False
+            # self.embedding.weight.data.uniform_(-1, 1)
             self.embedding_size = self.embedding.weight.data.shape[-1]
             print(f'load embedding from {chkpt_path} success, embedding_size={self.embedding_size}')
         except:

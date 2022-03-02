@@ -166,7 +166,8 @@ class BaseRunner:
         acc = torch.true_divide(self.correct, self.total)
         if acc > self.best:
             self.best = acc
-            self.save_checkpoint("checkpoints/{}_best.pkl".format(self.name))
+            if self.save_after_epoch:
+                self.save_checkpoint("checkpoints/{}_best.pkl".format(self.name))
         self.log.add_val_log("acc", acc)
         self.log.log_valid()
 

@@ -30,7 +30,7 @@ class CNNRunner(BaseRunner):
                     input = transform(input)
                 batch_data = {
                     'input': input.to(self.device),
-                    'label': torch.tensor(label).to(self.device),
+                    'label': label.to(self.device),
                 }
                 self.target = batch_data['label']
                 self.output = self.model(batch_data['input'])
@@ -67,7 +67,7 @@ class CNNRunner(BaseRunner):
                 for transform in self.transform:
                     input = transform(input)
                 input = input.to(self.device)
-                target = torch.tensor(label).to(self.device)
+                target = label.to(self.device)
                 output = self.model(input)
                 self.val_loss += self.criterion(output, target, reduction="sum")
                 pred = torch.max(output, dim=-1, keepdim=False)[-1]
