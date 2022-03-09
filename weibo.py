@@ -27,12 +27,12 @@ class Weibo:
 
     def __init__(self):
         self.cookie = {
-            'Cookie': 'SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9WWB9G_m9pdXDuHZy6gBjkmr5NHD95Qfeo-0ehBN1hBRWs4DqcjzCJvV9PLKUgRt; SUB=_2A25MlZmVDeRhGeNM7lER9CnEzzSIHXVseSfdrDV6PUJbktCOLRKnkW1NTgdeFJKhPv7dbZ6blhnoAp1v7Ntw1LJj; SSOLoginState=1636952518; _T_WM=57834509703; MLOGIN=1; BAIDU_SSP_lcr=https://github.com/851235550/weibospider; M_WEIBOCN_PARAMS=oid=4706307662153913&luicode=20000061&lfid=4706307662153913'
+            'Cookie': 'SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9WWB9G_m9pdXDuHZy6gBjkmr5NHD95Qfeo-0ehBN1hBRWs4DqcjzCJvV9PLKUgRt; SUB=_2A25M9qUDDeRhGeNM7lER9CnEzzSIHXVsGMtLrDV6PUJbktCOLU7BkW1NTgdeFHVltP2a9lG3XYCpKk2tNiEDIoSh; _T_WM=40266921044; WEIBOCN_FROM=1110006030; MLOGIN=1; M_WEIBOCN_PARAMS=luicode=10000011&lfid=102803&uicode=20000174'
         }
         self.headers = {
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
             'Accept-Language': 'zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2',
-            'Cookie': 'SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9WWB9G_m9pdXDuHZy6gBjkmr5NHD95Qfeo-0ehBN1hBRWs4DqcjzCJvV9PLKUgRt; SUB=_2A25MlZmVDeRhGeNM7lER9CnEzzSIHXVseSfdrDV6PUJbktCOLRKnkW1NTgdeFJKhPv7dbZ6blhnoAp1v7Ntw1LJj; SSOLoginState=1636952518; _T_WM=57834509703; MLOGIN=1; BAIDU_SSP_lcr=https://github.com/851235550/weibospider; M_WEIBOCN_PARAMS=oid=4706307662153913&luicode=20000061&lfid=4706307662153913',
+            'Cookie': 'SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9WWB9G_m9pdXDuHZy6gBjkmr5NHD95Qfeo-0ehBN1hBRWs4DqcjzCJvV9PLKUgRt; SUB=_2A25M9qUDDeRhGeNM7lER9CnEzzSIHXVsGMtLrDV6PUJbktCOLU7BkW1NTgdeFHVltP2a9lG3XYCpKk2tNiEDIoSh; _T_WM=40266921044; WEIBOCN_FROM=1110006030; MLOGIN=1; M_WEIBOCN_PARAMS=luicode=10000011&lfid=102803&uicode=20000174',
             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.55 Safari/537.36',
         }
         pass
