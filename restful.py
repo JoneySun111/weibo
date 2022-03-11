@@ -106,8 +106,11 @@ def search_user(nickname):
 @app.route('/search_realtime', methods=['GET', 'POST'])
 def search_realtime():
     weibo = Weibo()
-    keyword, page = get('keyword'), get('page', 1)
-    return return_data(weibo.search_realtime(keyword, page))
+    keyword, page, inference = get('keyword'), get('page', 1), get('inference', 0)
+    data = weibo.search_realtime(keyword, page)
+    if inference and 'data' in data:
+        data['data'] = _inference_datas(data['data'])
+    return return_data(data)
 
 
 @app.route('/search_hot', methods=['GET', 'POST'])
@@ -186,8 +189,7 @@ def inference_data(data):
     return res
 
 
-@app.route('/inference', methods=['GET', 'POST'])
-def inference_datas():
+def _inference_datas(data):
     def temp_prob(prob):
         if prob[0] > 0.65:
             return 0
@@ -200,14 +202,19 @@ def inference_datas():
         cfg = Config.fromfile('configs/cnn_inference.py')
         cfg.update(Config.from_list(['--inference', '1']))
         runner = BaseRunner(cfg)
-    data, count = json.loads(get('data')), get('count', 0)
     output = runner.inference([x.get('text') for x in data])
-    res = torch.max(output, dim=-1, keepdim=False)[-1].cpu().numpy().tolist()
+    # res = torch.max(output, dim=-1, keepdim=False)[-1].cpu().numpy().tolist()
     prob = output.cpu().numpy().tolist()
     for i in range(len(data)):
         data[i]['prob'] = prob[i]
         data[i]['label'] = temp_prob(prob[i])  # res[i]
-    return {'count': len(data), 'data': data}
+    return data
+
+
+@app.route('/inference', methods=['GET', 'POST'])
+def inference_datas():
+    data, count = json.loads(get('data')), get('count', 0)
+    return {'count': len(data), 'data': _inference_datas(data)}
 
 
 def embedding(data):
