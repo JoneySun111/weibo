@@ -97,10 +97,13 @@ class Weibo:
             print('Error: ', e)
             traceback.print_exc()
 
-    def html_str(self, url):
+    def html_str(self, url, cookie=True):
         """处理html"""
         try:
-            html = requests.get(url, cookies=self.cookie).content.decode('utf-8')
+            if cookie:
+                html = requests.get(url, cookies=self.cookie).content.decode('utf-8')
+            else:
+                html = requests.get(url).content.decode('utf-8')
             return html
         except Exception as e:
             print('Error: ', e)
@@ -428,7 +431,7 @@ class Weibo:
         url = 'https://m.weibo.cn/api/container/getIndex?containerid=231051_-_followers_-_{}&page={}'.format(
             user_id, page
         )
-        s = self.html_str(url)
+        s = self.html_str(url, False)
         obj_json = json.loads(s)
         data = []
         if obj_json.get('ok', 0) != 1:
@@ -446,7 +449,7 @@ class Weibo:
         url = 'https://m.weibo.cn/api/container/getIndex?containerid=231051_-_fans_-_{}&page={}'.format(
             user_id, page
         )
-        s = self.html_str(url)
+        s = self.html_str(url, False)
         obj_json = json.loads(s)
         data = []
         if obj_json.get('ok', 0) != 1:
@@ -637,7 +640,7 @@ class Weibo:
         url = 'https://m.weibo.cn/api/container/getIndex?containerid=100103type%3D3%26q%3D{}%26t%3D0&page_type=searchall'.format(
             nickname
         )
-        s = self.html_str(url)
+        s = self.html_str(url, False)
         obj_json = json.loads(s)
         data = []
         if obj_json.get('ok', 0) != 1:
@@ -655,7 +658,7 @@ class Weibo:
         url = 'https://m.weibo.cn/api/container/getIndex?containerid=100103type%3D61%26q%3D{}%26t%3D0&page_type=searchall&page={}'.format(
             keyword, page
         )
-        s = self.html_str(url)
+        s = self.html_str(url, False)
         obj_json = json.loads(s)
         data = []
         if obj_json.get('ok', 0) != 1:
@@ -694,7 +697,7 @@ class Weibo:
         url = 'https://m.weibo.cn/api/container/getIndex?containerid=100103type%3D60%26q%3D{}%26t%3D0&page_type=searchall&page={}'.format(
             keyword, page
         )
-        s = self.html_str(url)
+        s = self.html_str(url, False)
         obj_json = json.loads(s)
         data = []
         if obj_json.get('ok', 0) != 1:
@@ -733,33 +736,37 @@ class Weibo:
         url = 'https://m.weibo.cn/api/container/getIndex?containerid=100103type%3D38%26q%3D{}%26t%3D0&page_type=searchall&page={}'.format(
             keyword, page
         )
-        s = self.html_str(url)
+        s = self.html_str(url, False)
         obj_json = json.loads(s)
         data = []
         if obj_json.get('ok', 0) != 1:
             return {'code': 1, 'data': data, 'count': len(data)}
         obj = obj_json['data']
-        data=[]
+        data = []
         for card in obj['cards'][-1]['card_group']:
-            data.append({
-                'name':card['title_sub'],
-                'pic':card['pic'],
-                'desc1':card['desc1'],
-                'desc2':card.get('desc2',None),
-                'scheme':card['scheme'],
-            })
+            data.append(
+                {
+                    'name': card['title_sub'],
+                    'pic': card['pic'],
+                    'desc1': card['desc1'],
+                    'desc2': card.get('desc2', None),
+                    'scheme': card['scheme'],
+                }
+            )
         return {
-            'data':data,
-            'count':len(data),
-            'code':0,
-            'page':page,
-            'total':obj['cardlistInfo']['total'],
+            'data': data,
+            'count': len(data),
+            'code': 0,
+            'page': page,
+            'total': obj['cardlistInfo']['total'],
         }
+
 
 # weibo = Weibo()
 # print(weibo.search_topic('腾讯',1))
 # print(weibo.search_hot('字节跳动', 1))
-# weibo.search_user('zkl小同学')
+# print(weibo.search_realtime('字节跳动'))
+# print(weibo.search_user('zkl小同学'))
 # print(weibo.get_fans_m(5319509655))
 # print(weibo.get_background(5319509655))
 # weibo.get_follows(5319509655)
