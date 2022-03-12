@@ -729,8 +729,35 @@ class Weibo:
             'total': obj['cardlistInfo']['total'],
         }
 
+    def search_topic(self, keyword, page=1):
+        url = 'https://m.weibo.cn/api/container/getIndex?containerid=100103type%3D38%26q%3D{}%26t%3D0&page_type=searchall&page={}'.format(
+            keyword, page
+        )
+        s = self.html_str(url)
+        obj_json = json.loads(s)
+        data = []
+        if obj_json.get('ok', 0) != 1:
+            return {'code': 1, 'data': data, 'count': len(data)}
+        obj = obj_json['data']
+        data=[]
+        for card in obj['cards'][-1]['card_group']:
+            data.append({
+                'name':card['title_sub'],
+                'pic':card['pic'],
+                'desc1':card['desc1'],
+                'desc2':card.get('desc2',None),
+                'scheme':card['scheme'],
+            })
+        return {
+            'data':data,
+            'count':len(data),
+            'code':0,
+            'page':page,
+            'total':obj['cardlistInfo']['total'],
+        }
 
 # weibo = Weibo()
+# print(weibo.search_topic('腾讯',1))
 # print(weibo.search_hot('字节跳动', 1))
 # weibo.search_user('zkl小同学')
 # print(weibo.get_fans_m(5319509655))

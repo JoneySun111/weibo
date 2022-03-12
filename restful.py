@@ -112,6 +112,15 @@ def search_realtime():
         data['data'] = _inference_datas(data['data'])
     return return_data(data)
 
+@app.route('/search_topic', methods=['GET', 'POST'])
+def search_topic():
+    weibo = Weibo()
+    keyword, page, inference = get('keyword'), get('page', 1), get('inference', 0)
+    data = weibo.search_topic(keyword, page)
+    if inference and 'data' in data:
+        data['data'] = _inference_datas(data['data'])
+    return return_data(data)
+
 
 @app.route('/search_hot', methods=['GET', 'POST'])
 def search_hot():
