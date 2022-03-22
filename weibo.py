@@ -101,9 +101,14 @@ class Weibo:
         """处理html"""
         try:
             if cookie:
+                Weibo.cnt += 1
                 html = requests.get(url, cookies=self.cookie).content.decode('utf-8')
             else:
+                Weibo.cnt += 0.5
                 html = requests.get(url).content.decode('utf-8')
+            if Weibo.cnt > 6:
+                time.sleep(3)
+                Weibo.cnt = 0
             return html
         except Exception as e:
             print('Error: ', e)
@@ -761,39 +766,40 @@ class Weibo:
             'total': obj['cardlistInfo']['total'],
         }
 
+if __name__ == '__main__':
+    # weibo = Weibo()
+    # print(weibo.search_topic('腾讯',1))
+    # print(weibo.search_hot('字节跳动', 1))
+    # print(weibo.search_realtime('字节跳动'))
+    # print(weibo.search_user('zkl小同学'))
+    # print(weibo.get_fans_m(5319509655))
+    # print(weibo.get_background(5319509655))
+    # weibo.get_follows(5319509655)
+    # print(weibo.get_mblogs(5319509655,17))
+    # print(weibo.get_hot())
+    # print(weibo.search_hot('加强民航安全隐患排查', 1))
+    # mid = weibo.search("立陶宛求助欧盟制裁中国")['data'][0]['mid']
+    # print(weibo.get_comments_m(4711323370260659,2))
+    # print(weibo.get_comments(id))
+    # print(weibo.get_blogs(1887344341))
+    # # # # weibo.get_home()
+    # arr = weibo.get_user_id('zkl小同学')
+    # user_id = arr[0].get('user_id')
+    # print(user_id)
+    # weibo.get_fans(user_id)
+    # print(weibo.get_follow(user_id))
+    # print(weibo.get_user_home(user_id))
+    # id='Ii78Ikb9Z'
+    # print(weibo.get_comments(id))
+    # mysql.add_comments(weibo.get_comments(id)['data'])
+    # print(arr[0])
+    # print(weibo.get_user_info(user_id))
+    # user_id=arr[0].get('user_id')
+    # print(mysql.update_user(user_id,**weibo.get_user_info(user_id)))
+    # print(weibo.get_user_info(user_id))
+    # print(weibo.get_weibo(user_id))
 
-weibo = Weibo()
-# print(weibo.search_topic('腾讯',1))
-# print(weibo.search_hot('字节跳动', 1))
-# print(weibo.search_realtime('字节跳动'))
-# print(weibo.search_user('zkl小同学'))
-print(weibo.get_fans_m(5319509655))
-# print(weibo.get_background(5319509655))
-# weibo.get_follows(5319509655)
-# print(weibo.get_mblogs(5319509655,17))
-# print(weibo.get_hot())
-# mid = weibo.search("立陶宛求助欧盟制裁中国")['data'][0]['mid']
-# print(weibo.get_comments_m(4711323370260659,2))
-# print(weibo.get_comments(id))
-# print(weibo.get_blogs(1887344341))
-# # # # weibo.get_home()
-# arr = weibo.get_user_id('zkl小同学')
-# user_id = arr[0].get('user_id')
-# print(user_id)
-# weibo.get_fans(user_id)
-# print(weibo.get_follow(user_id))
-# print(weibo.get_user_home(user_id))
-# id='Ii78Ikb9Z'
-# print(weibo.get_comments(id))
-# mysql.add_comments(weibo.get_comments(id)['data'])
-# print(arr[0])
-# print(weibo.get_user_info(user_id))
-# user_id=arr[0].get('user_id')
-# print(mysql.update_user(user_id,**weibo.get_user_info(user_id)))
-# print(weibo.get_user_info(user_id))
-# print(weibo.get_weibo(user_id))
+    # print(mysql.add_user(**arr[0]))
+    # print(mysql.add_users(arr))
 
-# print(mysql.add_user(**arr[0]))
-# print(mysql.add_users(arr))
-
-# print(mysql.query_all_users())
+    # print(mysql.query_all_users())

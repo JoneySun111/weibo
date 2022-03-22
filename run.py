@@ -99,15 +99,44 @@ def write_comments(blogs, max_pages=20):
     for blog in blogs[last:]:
         # log('write_comments')
         for i in range(1, max_pages + 1):
+            if 'mid' not in blog:
+                continue
             res = weibo.get_comments_by_mid(blog['mid'], i)
             if res['count'] == 0:
                 break
             data = res.get('data')
-            mysql.add_comments(data)
+            cnt = mysql.add_comments(data)
+
+
+def write_hot(max_page=20):
+    
+    keys = weibo.get_hot()
+    init_log(len(keys))
+    for key in keys:
+
+        for page in range(1, max_page + 1):
+            res = weibo.search_realtime(key, page)
+            if res.get('page', 0) == 0:
+                break
+            blogs = res.get('data')
+            cnt = mysql.add_blogs(blogs)
+            blogs = list(filter(lambda x: x.get('comment', 0) > 0, blogs))
+            write_comments(blogs)
+
+        for page in range(1, max_page + 1):
+            res = weibo.search_hot(key, page)
+            if res.get('page', 0) == 0:
+                break
+            blogs = res.get('data')
+            cnt = mysql.add_blogs(blogs)
+            blogs = list(filter(lambda x: x.get('comment', 0) > 0, blogs))
+            write_comments(blogs, 10)
+        log(f'{key} finish')
 
 
 if __name__ == '__main__':
-    write_blogs([x[0] for x in mysql.query_all_users()], max_pages=5, _write_comments=True)
+    write_hot(20)
+    # write_blogs([x[0] for x in mysql.query_all_users()], max_pages=5, _write_comments=True)
     # fill_user_info([x[0] for x in mysql.query_all_users()])
     # write_blogs([x[0] for x in mysql.query_all_users()],3)
     # expand_user_by_fans([x[0] for x in mysql.query_all_users()],2)
