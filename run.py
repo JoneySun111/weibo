@@ -107,6 +107,7 @@ def write_comments(blogs, max_pages=20):
                 break
             data = res.get('data')
             cnt = cnt + mysql.add_comments(data)
+    return cnt
 
 
 def write_hot(max_page=20):
@@ -120,7 +121,7 @@ def write_hot(max_page=20):
             if res.get('page', 0) == 0:
                 break
             blogs = res.get('data')
-            cnt = mysql.add_blogs(blogs)
+            cnt = cnt + mysql.add_blogs(blogs)
             blogs = list(filter(lambda x: x.get('comment', 0) > 0, blogs))
             cnt = cnt + write_comments(blogs)
 
@@ -131,7 +132,7 @@ def write_hot(max_page=20):
             blogs = res.get('data')
             cnt = cnt + mysql.add_blogs(blogs)
             blogs = list(filter(lambda x: x.get('comment', 0) > 0, blogs))
-            write_comments(blogs, 10)
+            cnt = cnt + write_comments(blogs, 10)
         log(f'{key} {cnt} comments finish')
 
 
