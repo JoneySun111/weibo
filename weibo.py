@@ -106,9 +106,11 @@ class Weibo:
             else:
                 Weibo.cnt += 0.5
                 html = requests.get(url).content.decode('utf-8')
-            if Weibo.cnt > 6:
-                time.sleep(6)
-                Weibo.cnt = 0
+            # if Weibo.cnt==3:
+            #     time.sleep(1)
+            # if Weibo.cnt > 5:
+            #     time.sleep(6)
+            #     Weibo.cnt = 0
             return html
         except Exception as e:
             print('Error: ', e)
@@ -479,6 +481,18 @@ class Weibo:
             if title not in res:
                 res.append(title)
         return res
+    
+    def get_hot_m(self):
+        url='https://m.weibo.cn/api/container/getIndex?containerid=106003type%3D25%26t%3D3%26disable_hot%3D1%26filter_type%3Drealtimehot&title=%E5%BE%AE%E5%8D%9A%E7%83%AD%E6%90%9C&extparam=seat%3D1%26dgr%3D0%26pos%3D0_0%26lcate%3D1001%26mi_cid%3D100103%26cate%3D10103%26filter_type%3Drealtimehot%26c_type%3D30%26display_time%3D1647962600%26pre_seqid%3D2135596032&luicode=10000011&lfid=231583'
+        s = self.html_str(url, False)
+        obj_json = json.loads(s)
+        assert obj_json.get('ok', 0) == 1
+        data = obj_json['data']['cards'][0]['card_group']
+        return {
+            'data': data,
+            'count': len(data),
+            'code': 0,
+        }
 
     def search(self, key):
         url = (
@@ -768,6 +782,7 @@ class Weibo:
 
 if __name__ == '__main__':
     weibo = Weibo()
+    print(weibo.get_hot_m())
     # print(weibo.search_topic('腾讯',1))
     # print(weibo.search_hot('字节跳动', 1))
     # print(weibo.search_realtime('字节跳动'))

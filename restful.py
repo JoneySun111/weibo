@@ -110,7 +110,9 @@ def search_realtime():
     data = weibo.search_realtime(keyword, page)
     if inference and 'data' in data:
         data['data'] = _inference_datas(data['data'])
+    add_blogs(data['data'])
     return return_data(data)
+
 
 @app.route('/search_topic', methods=['GET', 'POST'])
 def search_topic():
@@ -248,6 +250,10 @@ def test_embedding_():
 @app.route('/get_hot', methods=['GET', 'POST'])
 def get_hot():
     return return_data(Weibo().get_hot())
+
+@app.route('/get_hot_m', methods=['GET', 'POST'])
+def get_hot_m():
+    return return_data(Weibo().get_hot_m())
 
 
 if __name__ == '__main__':
