@@ -135,7 +135,7 @@ def write_hot(max_page=20):
 
 
 if __name__ == '__main__':
-    write_hot(20)
+    write_hot(4)
     # write_blogs([x[0] for x in mysql.query_all_users()], max_pages=5, _write_comments=True)
     # fill_user_info([x[0] for x in mysql.query_all_users()])
     # write_blogs([x[0] for x in mysql.query_all_users()],3)

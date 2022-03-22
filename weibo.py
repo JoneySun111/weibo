@@ -767,7 +767,7 @@ class Weibo:
         }
 
 if __name__ == '__main__':
-    # weibo = Weibo()
+    weibo = Weibo()
     # print(weibo.search_topic('腾讯',1))
     # print(weibo.search_hot('字节跳动', 1))
     # print(weibo.search_realtime('字节跳动'))
