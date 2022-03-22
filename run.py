@@ -92,6 +92,7 @@ def expand_user_by_follow(userid, max_pages=20):
 
 
 def write_comments(blogs, max_pages=20):
+    cnt = 0
     last = 0
     if not isinstance(blogs, list):
         blogs = [blogs]
@@ -105,15 +106,15 @@ def write_comments(blogs, max_pages=20):
             if res['count'] == 0:
                 break
             data = res.get('data')
-            cnt = mysql.add_comments(data)
+            cnt = cnt + mysql.add_comments(data)
 
 
 def write_hot(max_page=20):
-    
+
     keys = weibo.get_hot()
     init_log(len(keys))
     for key in keys:
-
+        cnt = 0
         for page in range(1, max_page + 1):
             res = weibo.search_realtime(key, page)
             if res.get('page', 0) == 0:
@@ -121,17 +122,17 @@ def write_hot(max_page=20):
             blogs = res.get('data')
             cnt = mysql.add_blogs(blogs)
             blogs = list(filter(lambda x: x.get('comment', 0) > 0, blogs))
-            write_comments(blogs)
+            cnt = cnt + write_comments(blogs)
 
         for page in range(1, max_page + 1):
             res = weibo.search_hot(key, page)
             if res.get('page', 0) == 0:
                 break
             blogs = res.get('data')
-            cnt = mysql.add_blogs(blogs)
+            cnt = cnt + mysql.add_blogs(blogs)
             blogs = list(filter(lambda x: x.get('comment', 0) > 0, blogs))
             write_comments(blogs, 10)
-        log(f'{key} finish')
+        log(f'{key} {cnt} comments finish')
 
 
 if __name__ == '__main__':

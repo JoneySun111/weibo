@@ -107,7 +107,7 @@ class Weibo:
                 Weibo.cnt += 0.5
                 html = requests.get(url).content.decode('utf-8')
             if Weibo.cnt > 6:
-                time.sleep(3)
+                time.sleep(6)
                 Weibo.cnt = 0
             return html
         except Exception as e:
