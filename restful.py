@@ -3,6 +3,7 @@ from mysql import *
 from flask import Flask, request
 from flask_cors import CORS
 from train import *
+from transform.base_tokenizer import *
 import json
 import datetime
 
@@ -64,7 +65,8 @@ def add_blogs(blogs):
                 now[k2] = blog[k1]
         now['time'] = to_datetime(now['time'])
         lst.append(now)
-    mysql.add_blogs(lst)
+    cnt = mysql.add_blogs(lst)
+    print(f'add {cnt} blogs')
 
 
 def add_comments(comments):
@@ -106,10 +108,17 @@ def search_user(nickname):
 @app.route('/search_realtime', methods=['GET', 'POST'])
 def search_realtime():
     weibo = Weibo()
-    keyword, page, inference = get('keyword'), get('page', 1), get('inference', 0)
+    keyword, page, inference, tokenize = (
+        get('keyword'),
+        get('page', 1),
+        get('inference', 0),
+        get('tokenize', 0),
+    )
     data = weibo.search_realtime(keyword, page)
     if inference and 'data' in data:
         data['data'] = _inference_datas(data['data'])
+    if tokenize and 'data' in data:
+        data['data'] = _tokenize_data(data['data'])
     add_blogs(data['data'])
     return return_data(data)
 
@@ -182,6 +191,7 @@ def get_comments():
 
 
 runner = None
+tokenizer = None
 
 
 @app.route('/inference/<data>', methods=['GET', 'POST'])
@@ -228,6 +238,15 @@ def inference_datas():
     return {'count': len(data), 'data': _inference_datas(data)}
 
 
+def _tokenize_data(data):
+    global tokenizer
+    tokenizer = BaseTokenizer()
+    output = tokenizer([x.get('text') for x in data])
+    for i in range(len(data)):
+        data[i]['tokenize_result'] = output[i]
+    return data
+
+
 def embedding(data):
     global runner
     if runner is None:
@@ -250,6 +269,7 @@ def test_embedding_():
 @app.route('/get_hot', methods=['GET', 'POST'])
 def get_hot():
     return return_data(Weibo().get_hot())
+
 
 @app.route('/get_hot_m', methods=['GET', 'POST'])
 def get_hot_m():

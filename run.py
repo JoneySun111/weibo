@@ -114,7 +114,7 @@ def write_hot(max_page=20):
 
     keys = weibo.get_hot()
     init_log(len(keys))
-    for key in keys:
+    for key in keys[4:]:
         cnt = 0
         for page in range(1, max_page + 1):
             res = weibo.search_realtime(key, page)

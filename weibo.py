@@ -102,15 +102,14 @@ class Weibo:
         try:
             if cookie:
                 Weibo.cnt += 1
+                # time.sleep(2)
                 html = requests.get(url, cookies=self.cookie).content.decode('utf-8')
             else:
-                Weibo.cnt += 0.5
+                Weibo.cnt += 0.2
                 html = requests.get(url).content.decode('utf-8')
-            # if Weibo.cnt==3:
-            #     time.sleep(1)
-            # if Weibo.cnt > 5:
-            #     time.sleep(6)
-            #     Weibo.cnt = 0
+            if Weibo.cnt > 6:
+                time.sleep(3)
+                Weibo.cnt = 0
             return html
         except Exception as e:
             print('Error: ', e)
