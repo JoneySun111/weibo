@@ -1,5 +1,5 @@
 # weibo
-
+[获取cookie](https://github.com/dataabc/weiboSpider/blob/master/docs/cookie.md)
 # 博客、知识点
 [PyTorch官网](https://pytorch.org/docs/stable/index.html)
 

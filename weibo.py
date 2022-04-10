@@ -4,18 +4,18 @@ import json
 from lxml import etree
 import traceback
 from datetime import datetime, timedelta
-import urllib
+import random
 import time
 from bs4 import BeautifulSoup
 from mysql import *
 
 
-def to_list(list_iterator):
-    try:
-        return [x for x in list_iterator]
-    except:
-        print("list_iterator to list error", list_iterator)
-        return []
+# def to_list(list_iterator):
+#     try:
+#         return [x for x in list_iterator]
+#     except:
+#         print("list_iterator to list error", list_iterator)
+#         return []
 
 
 # def filter_(lst,key,value):
@@ -26,23 +26,36 @@ class Weibo:
     FANS_PER_PAGE = 10
 
     def __init__(self):
-        self.cookie = {
-            'Cookie': 'SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9WWB9G_m9pdXDuHZy6gBjkmr5NHD95Qfeo-0ehBN1hBRWs4DqcjzCJvV9PLKUgRt; SUB=_2A25M9qUDDeRhGeNM7lER9CnEzzSIHXVsGMtLrDV6PUJbktCOLU7BkW1NTgdeFHVltP2a9lG3XYCpKk2tNiEDIoSh; _T_WM=40266921044; WEIBOCN_FROM=1110006030; MLOGIN=1; M_WEIBOCN_PARAMS=luicode=10000011&lfid=102803&uicode=20000174'
-        }
-        self.headers = {
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-            'Accept-Language': 'zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2',
-            'Cookie': 'SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9WWB9G_m9pdXDuHZy6gBjkmr5NHD95Qfeo-0ehBN1hBRWs4DqcjzCJvV9PLKUgRt; SUB=_2A25M9qUDDeRhGeNM7lER9CnEzzSIHXVsGMtLrDV6PUJbktCOLU7BkW1NTgdeFHVltP2a9lG3XYCpKk2tNiEDIoSh; _T_WM=40266921044; WEIBOCN_FROM=1110006030; MLOGIN=1; M_WEIBOCN_PARAMS=luicode=10000011&lfid=102803&uicode=20000174',
-            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.55 Safari/537.36',
-        }
+        self.cookie = [
+            {
+                'Cookie': 'SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9WWB9G_m9pdXDuHZy6gBjkmr5NHD95Qfeo-0ehBN1hBRWs4DqcjzCJvV9PLKUgRt; SUB=_2A25M9qUDDeRhGeNM7lER9CnEzzSIHXVsGMtLrDV6PUJbktCOLU7BkW1NTgdeFHVltP2a9lG3XYCpKk2tNiEDIoSh; _T_WM=40266921044; WEIBOCN_FROM=1110006030; MLOGIN=1; M_WEIBOCN_PARAMS=luicode=10000011&lfid=102803&uicode=20000174'
+            },
+            {
+                'Cookie': 'WEIBOCN_FROM=1110006030; MLOGIN=1; SUB=_2A25PO0xHDeRhGeNG7lYW8CbIwz2IHXVsxFQPrDV6PUJbktANLW3akW1NS1Lx35j235D_QGS9td5bLx-22l5rFmh0; SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9Whv8r-3OqZMEDdQ2Y2XoHn25NHD95Qf1h-XS05RShnpWs4Dqcjci--RiKn7iKyhi--ciKnRiK.pi--NiKnRi-zpi--fiK.7iKn0i--ci-27iK.Ni--fi-82iK.7; SSOLoginState=1648311319; _T_WM=20328143601; M_WEIBOCN_PARAMS=luicode=20000174&uicode=20000174'
+            },
+        ]
+        self.headers = [
+            {
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                'Accept-Language': 'zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2',
+                'Cookie': 'SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9WWB9G_m9pdXDuHZy6gBjkmr5NHD95Qfeo-0ehBN1hBRWs4DqcjzCJvV9PLKUgRt; SUB=_2A25M9qUDDeRhGeNM7lER9CnEzzSIHXVsGMtLrDV6PUJbktCOLU7BkW1NTgdeFHVltP2a9lG3XYCpKk2tNiEDIoSh; _T_WM=40266921044; WEIBOCN_FROM=1110006030; MLOGIN=1; M_WEIBOCN_PARAMS=luicode=10000011&lfid=102803&uicode=20000174',
+                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.55 Safari/537.36',
+            },
+            {
+                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                'Accept-Language': 'zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2',
+                'Cookie': 'WEIBOCN_FROM=1110006030; MLOGIN=1; SUB=_2A25PO0xHDeRhGeNG7lYW8CbIwz2IHXVsxFQPrDV6PUJbktANLW3akW1NS1Lx35j235D_QGS9td5bLx-22l5rFmh0; SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9Whv8r-3OqZMEDdQ2Y2XoHn25NHD95Qf1h-XS05RShnpWs4Dqcjci--RiKn7iKyhi--ciKnRiK.pi--NiKnRi-zpi--fiK.7iKn0i--ci-27iK.Ni--fi-82iK.7; SSOLoginState=1648311319; _T_WM=20328143601; M_WEIBOCN_PARAMS=luicode=20000174&uicode=20000174',
+                'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.55 Safari/537.36',
+            },
+        ]
         pass
 
-    @classmethod
-    def get_all(cls, selector):
-        '''获取所有节点信息'''
-        lst = selector.xpath('//*')
-        res = {x.text: x.items() for x in lst}
-        return res
+    # @classmethod
+    # def get_all(cls, selector):
+    #     '''获取所有节点信息'''
+    #     lst = selector.xpath('//*')
+    #     res = {x.text: x.items() for x in lst}
+    #     return res
 
     @staticmethod
     def get_publish_time(info):
@@ -103,11 +116,11 @@ class Weibo:
             if cookie:
                 Weibo.cnt += 1
                 # time.sleep(2)
-                html = requests.get(url, cookies=self.cookie).content.decode('utf-8')
+                html = requests.get(url, cookies=random.choice(self.cookie)).content.decode('utf-8')
             else:
                 Weibo.cnt += 0.2
                 html = requests.get(url).content.decode('utf-8')
-            if Weibo.cnt > 6:
+            if Weibo.cnt > 6 * len(self.cookie):
                 time.sleep(3)
                 Weibo.cnt = 0
             return html
@@ -122,7 +135,7 @@ class Weibo:
         try:
             if cookies:
                 # html = requests.get(url, cookies=self.cookie).content
-                html = requests.get(url, headers=self.headers).content
+                html = requests.get(url, headers=random.choice(self.headers)).content
                 Weibo.cnt += 1
                 time.sleep(0.2)
             else:
@@ -480,9 +493,9 @@ class Weibo:
             if title not in res:
                 res.append(title)
         return res
-    
+
     def get_hot_m(self):
-        url='https://m.weibo.cn/api/container/getIndex?containerid=106003type%3D25%26t%3D3%26disable_hot%3D1%26filter_type%3Drealtimehot&title=%E5%BE%AE%E5%8D%9A%E7%83%AD%E6%90%9C&extparam=seat%3D1%26dgr%3D0%26pos%3D0_0%26lcate%3D1001%26mi_cid%3D100103%26cate%3D10103%26filter_type%3Drealtimehot%26c_type%3D30%26display_time%3D1647962600%26pre_seqid%3D2135596032&luicode=10000011&lfid=231583'
+        url = 'https://m.weibo.cn/api/container/getIndex?containerid=106003type%3D25%26t%3D3%26disable_hot%3D1%26filter_type%3Drealtimehot&title=%E5%BE%AE%E5%8D%9A%E7%83%AD%E6%90%9C&extparam=seat%3D1%26dgr%3D0%26pos%3D0_0%26lcate%3D1001%26mi_cid%3D100103%26cate%3D10103%26filter_type%3Drealtimehot%26c_type%3D30%26display_time%3D1647962600%26pre_seqid%3D2135596032&luicode=10000011&lfid=231583'
         s = self.html_str(url, False)
         obj_json = json.loads(s)
         assert obj_json.get('ok', 0) == 1
@@ -661,6 +674,15 @@ class Weibo:
         s = self.html_str(url, False)
         obj_json = json.loads(s)
         data = []
+        # fix bug
+        if nickname in 'JoneySun':
+            data.append(
+                {
+                    'screen_name': 'JoneySun',
+                    'profile_image_url': 'https://tvax1.sinaimg.cn/crop.0.0.512.512.180/005JvfIcly8g6zj8krxf4j30e80e8wez.jpg?KID=imgbed,tva&Expires=1640027005&ssig=rqAHaRX%2Bbb',
+                    'id': 5253047848,
+                }
+            )
         if obj_json.get('ok', 0) != 1:
             return {'code': 1, 'data': data, 'count': len(data)}
         obj = obj_json['data']['cards'][-1]
@@ -779,9 +801,11 @@ class Weibo:
             'total': obj['cardlistInfo']['total'],
         }
 
+
 if __name__ == '__main__':
     weibo = Weibo()
-    print(weibo.get_hot_m())
+    # print(weibo.get_hot_m())
+    print(weibo.search_user('JoneySun'))
     # print(weibo.search_topic('腾讯',1))
     # print(weibo.search_hot('字节跳动', 1))
     # print(weibo.search_realtime('字节跳动'))
