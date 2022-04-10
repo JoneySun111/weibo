@@ -38,7 +38,7 @@ class BaseRunner:
 
         self.criterion = eval(cfg.get("criterion", '0'))
         self.init_dataloader()
-        self.log = log(self.log_interval)
+        self.log = log(self.log_interval, self.name)
         self.optimizer = eval(cfg.get("optimizer"))(self.model.parameters())
         self.epoch = 1
         self.iter = 1
@@ -73,7 +73,7 @@ class BaseRunner:
             for transform in self.transform:
                 batch_data["input"] = transform(batch_data["input"])
             self.target = torch.tensor(batch_data["label"]).to(self.device)
-            self.output = self.model(batch_data.get("input"))
+            self.output = self.model(batch_data.get("input").to(self.device))
             self.after_train_iter()
 
         self.after_run()
@@ -90,7 +90,7 @@ class BaseRunner:
                 for transform in self.transform:
                     batch_data["input"] = transform(batch_data["input"])
                 target = torch.tensor(batch_data["label"]).to(self.device)
-                output = self.model(batch_data.get("input")).to(self.device)
+                output = self.model(batch_data.get("input").to(self.device)).to(self.device)
                 self.val_loss += self.criterion(output, target, reduction="sum")
                 pred = torch.max(output, dim=-1, keepdim=False)[-1]
                 self.correct += pred.eq(target.data).sum()

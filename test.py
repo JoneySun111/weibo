@@ -174,10 +174,50 @@ def test_model():
         inference()
     # test()
 
+def read_csv():
+    import pandas as pd
+    import random
+    path='F:\Desktop\毕设\ChineseNlpCorpus-master\weibo_senti_100k\weibo_senti_100k'
+    pd_all = pd.read_csv(path + '\weibo_senti_100k.csv')
+    # print(pd_all.sample(20))
+    data=[]
+    for i in range(len(pd_all)):
+        data.append({
+            'label':pd_all['label'][i],    
+            'review':pd_all['review'][i],
+        })
+    random.shuffle(data)
+    with open("dataset/train_10w.data","w",encoding='utf-8') as f:
+        for i in range(100000):
+            f.write(",{},{}\n".format(data[i]['label'],data[i]['review']))
+    with open("dataset/test_2w.data","w",encoding='utf-8') as f:
+        for i in range(100000,len(data)):
+            f.write(",{},{}\n".format(data[i]['label'],data[i]['review']))
+
+def save_mapping():
+    dataset = OldDataset(['dataset/train_10w.data', 'dataset/test_2w.data'])
+    dataloader = torch.utils.data.DataLoader(dataset=dataset, batch_size=batch_size, shuffle=True)
+    print(len(dataset))
+
+    mp = mapping()
+
+    # tokenizer = MiNLPTokenizer(granularity='fine')
+    for i, data in enumerate(dataloader):
+        data = data[0]
+        mp.add_sentences(data)
+        if i % 100 == 1:
+            print(f'{i} % {len(dataloader)}')
+            # sleep(0.4)
+    mp.init(mapping_size, debug=1)
+    print(mp.get_sentence(range(0, 20)))
+    mp.dump('dump/mapping_12w_3000.data')
+
 
 if __name__ == '__main__':
     # print(torch.__version__)
     # print(torch.cuda.is_available())
-    test_mapping()
+    # test_mapping()
     # test_tokenizer()
     # test_model()
+    # read_csv()
+    save_mapping()

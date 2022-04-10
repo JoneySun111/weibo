@@ -12,7 +12,7 @@
     'transform': "[" "BaseTransform('dump/mapping_3000.data',max_word_size=100)]",
     'optimizer': 'optim.Adam',
     'criterion': 'F.nll_loss',
-    'save_after_epoch': True,
+    # 'save_after_epoch': True,
     'name': 'cnn_old',
     'batch_size': 100,
     'device': 'gpu',
