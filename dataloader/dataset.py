@@ -1,8 +1,13 @@
 import random
-from torch.utils.data import Dataset
+import torch
+
+# import sys
+# sys.path.append('..')
+# from transform.word_transform import *
+# from torch.utils.data import Dataset
 
 
-class TxtDataset(Dataset):
+class TxtDataset(torch.utils.data.Dataset):
     def __init__(
         self,
         path_list,
@@ -24,7 +29,7 @@ class TxtDataset(Dataset):
         return self.data[idx]
 
 
-class OldDataset(Dataset):
+class OldDataset(torch.utils.data.Dataset):
     def __init__(
         self,
         path_list,
@@ -47,6 +52,24 @@ class OldDataset(Dataset):
     def __getitem__(self, idx):
         return self.data[idx], int(self.label[idx])
 
+
+class WordDataset(OldDataset):
+    def __init__(self, path_list):
+        super().__init__(path_list)
+        self.data = list(map(lambda x: eval(x), self.data))
+        # self.data = WordTransfomer(max_word_size)(self.data)
+
+
+if __name__ == '__main__':
+    dataset=OldDataset(['dataset/train_10w_word.data'])
+    print(len(dataset[0][0]))
+    # import torch
+    batch_size=10
+    dataloader = torch.utils.data.DataLoader(dataset=dataset, batch_size=batch_size, shuffle=True)
+    for x in dataloader:
+        print(x)
+        break
+    # for x in 
 
 # class TxtDataset(Dataset):
 #     def __init__(

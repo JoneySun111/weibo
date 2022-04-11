@@ -196,21 +196,35 @@ def read_csv():
 
 def save_mapping():
     dataset = OldDataset(['dataset/train_10w.data', 'dataset/test_2w.data'])
+    # dataset = OldDataset(['dataset/test_2w.data'])
     dataloader = torch.utils.data.DataLoader(dataset=dataset, batch_size=batch_size, shuffle=True)
     print(len(dataset))
 
     mp = mapping()
-
-    # tokenizer = MiNLPTokenizer(granularity='fine')
+    tokenizer = MiNLPTokenizer(granularity='fine')
     for i, data in enumerate(dataloader):
-        data = data[0]
-        mp.add_sentences(data)
-        if i % 100 == 1:
+        data = list(data[0])
+        mp.add_sentences(tokenizer.cut(data))
+        if i % 10 == 1:
             print(f'{i} % {len(dataloader)}')
             # sleep(0.4)
     mp.init(mapping_size, debug=1)
     print(mp.get_sentence(range(0, 20)))
-    mp.dump('dump/mapping_12w_3000.data')
+    mp.dump('dump/tokenizer_mapping_12w_3000.data')
+
+def tokenize_text():
+    tokenizer = MiNLPTokenizer(granularity='fine')
+    dataset = OldDataset(['dataset/test_2w.data'])
+    # dataset = OldDataset(['dataset/test_2w.data'])
+    dataloader = torch.utils.data.DataLoader(dataset=dataset, batch_size=batch_size, shuffle=False)
+    with open("dataset/test_2w_word.data","w",encoding='utf-8') as f1:
+        for i, data in enumerate(dataloader):
+            input = list(data[0])
+            res=tokenizer.cut(input)
+            for label,text in zip(data[1],res):
+                f1.write(',{},{}\n'.format(label,text))
+        if i % 10 == 1:
+            print(f'{i} % {len(dataloader)}')
 
 
 if __name__ == '__main__':
@@ -220,4 +234,5 @@ if __name__ == '__main__':
     # test_tokenizer()
     # test_model()
     # read_csv()
-    save_mapping()
+    # save_mapping()
+    tokenize_text()
