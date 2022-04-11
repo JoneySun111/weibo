@@ -1,7 +1,7 @@
 {
     'runner': 'CNNRunner',
     'max_epoch': 10,
-    'model': 'CNNModel(50,"checkpoints/skipgram_12w_best.pkl")',
+    'model': 'CNNModel(50,"checkpoints/skipgram_12w_ebd80_best.pkl")',
     'log_interval': 10,
     'train_dataloader': "torch.utils.data.DataLoader(dataset="
     "OldDataset(['dataset/train_10w.data'])"
@@ -13,7 +13,7 @@
     'optimizer': 'optim.Adam',
     'criterion': 'F.nll_loss',
     # 'save_after_epoch': True,
-    'name': 'cnn_50_12w',
+    'name': 'cnn_50_12w_ebd80',
     'batch_size': 1000,
     'device': 'gpu',
 }

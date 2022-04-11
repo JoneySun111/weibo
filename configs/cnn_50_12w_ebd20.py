@@ -1,6 +1,6 @@
 {
     'runner': 'CNNRunner',
-    'max_epoch': 5,
+    'max_epoch': 10,
     'model': 'CNNModel(50,"checkpoints/skipgram_12w_ebd20_best.pkl")',
     'log_interval': 10,
     'train_dataloader': "torch.utils.data.DataLoader(dataset="
