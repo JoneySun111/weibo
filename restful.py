@@ -234,6 +234,8 @@ def _inference_datas(data):
         cfg = Config.fromfile('configs/cnn_inference.py')
         cfg.update(Config.from_list(['--inference', '1']))
         runner = BaseRunner(cfg)
+    if len(data) == 0:
+        return data
     output = runner.inference([x.get('text') for x in data])
     # res = torch.max(output, dim=-1, keepdim=False)[-1].cpu().numpy().tolist()
     prob = output.cpu().numpy().tolist()

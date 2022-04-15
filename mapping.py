@@ -71,6 +71,8 @@ class mapping:
         lst = []
         for sentence in sentences:
             lst.append(self.mapping_from_sentence(sentence))
+        if len(lst)==0:
+            return torch.tensor(lst)
         return torch.stack(lst)
 
     def id_to_word(self, id):
