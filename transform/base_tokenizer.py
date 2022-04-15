@@ -10,6 +10,6 @@ class BaseTokenizer:
 
     def __call__(self, data):
         if isinstance(data, list):
-            data = list(map(lambda x: x if x != '' else ' '), data)
+            data = list(map(lambda x: x if x != '' else ' ', data))
         data = self.tokenizer.cut(data)
         return data
