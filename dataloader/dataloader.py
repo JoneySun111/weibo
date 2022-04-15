@@ -47,3 +47,26 @@ class Dataloader:
         except:
             pass
         return batch_data
+
+class WordDataloader(Dataloader):
+    
+    def reset(
+        self,
+    ):
+        self.epoch_count += 1
+        random.seed(123356 + self.epoch_count)
+        if self.shuffle:
+            random.shuffle(self.path_list)
+        self.index = 0
+        self.data = []
+        for path in self.path_list:
+            with open(path, 'r', encoding='utf-8') as f:
+                line = f.readline()
+                while line:
+                    line = line.replace('\u200b', '').strip().split(',')
+                    label = int(line[1])
+                    input = ','.join(line[2:])
+                    self.data.append([eval(input), label])
+                    line = f.readline()
+        if self.shuffle:
+            random.shuffle(self.data)

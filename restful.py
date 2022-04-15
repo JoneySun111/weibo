@@ -207,7 +207,7 @@ tokenizer = None
 def inference_data(data):
     global runner
     if runner is None:
-        cfg = Config.fromfile('configs/cnn_inference.py')
+        cfg = Config.fromfile('configs/inference/cnn_50_inference_acc99.6.py')
         cfg.update(Config.from_list(['--inference', '1']))
         runner = BaseRunner(cfg)
     output = runner.inference(data)
@@ -221,6 +221,8 @@ def inference_data(data):
 
 def _inference_datas(data):
     def temp_prob(prob):
+        if len(prob) >= 3:
+            return prob.index(max(prob))
         if prob[0] > 0.65:
             return 0
         if prob[1] > 0.65:
@@ -229,7 +231,7 @@ def _inference_datas(data):
 
     global runner
     if runner is None:
-        cfg = Config.fromfile('configs/cnn_inference.py')
+        cfg = Config.fromfile('configs/inference/cnn_50_inference_acc99.6.py')
         cfg.update(Config.from_list(['--inference', '1']))
         runner = BaseRunner(cfg)
     output = runner.inference([x.get('text') for x in data])
@@ -252,7 +254,7 @@ def _tokenize_data(data, remove_topic=0):
     tokenizer = BaseTokenizer()
 
     def _remove_topic(text):
-        if remove_topic==0:
+        if remove_topic == 0:
             return text
         lst = text.split('#')
         text = ''
@@ -269,7 +271,7 @@ def _tokenize_data(data, remove_topic=0):
 def embedding(data):
     global runner
     if runner is None:
-        cfg = Config.fromfile('configs/cnn_inference.py')
+        cfg = Config.fromfile('configs/inference/cnn_50_inference_acc99.6.py')
         cfg.update(Config.from_list(['--inference', '1']))
         runner = BaseRunner(cfg)
     return str(runner.test_embedding(data))

@@ -53,7 +53,7 @@ class mysql:
 
     @classmethod
     def query_comments(cls, where=None, page=0, page_size=-1):
-        sql = 'select text from comment'
+        sql = 'select * from comment'
         if where:
             sql += ' where {}'.format(where)
         if page or page_size != -1:
