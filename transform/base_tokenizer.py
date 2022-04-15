@@ -9,5 +9,7 @@ class BaseTokenizer:
         self.tokenizer = MiNLPTokenizer(granularity=granularity)
 
     def __call__(self, data):
+        if isinstance(data, list):
+            data = list(map(lambda x: x if x != '' else ' '), data)
         data = self.tokenizer.cut(data)
         return data
