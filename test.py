@@ -204,6 +204,7 @@ def read_csv():
 def save_mapping():
     dataset = OldDataset(['dataset/train_10w.data', 'dataset/test_2w.data'])
     dataset = OldDataset(['dataset/dataset3_train.data', 'dataset/dataset3_test.data','dataset/mydataset_label.data'])
+    dataset = OldDataset(['dataset/mydataset_train.data', 'dataset/mydataset_test.data'])
     # dataset = OldDataset(['dataset/test_2w.data'])
     dataloader = torch.utils.data.DataLoader(dataset=dataset, batch_size=batch_size, shuffle=True)
     print(len(dataset))
@@ -219,7 +220,7 @@ def save_mapping():
             # sleep(0.4)
     mp.init(mapping_size, debug=1)
     print(mp.get_sentence(range(0, 20)))
-    mp.dump('dump/mapping_dataset3_3000.data')
+    mp.dump('dump/mapping_mydataset_3000.data')
 
 
 def tokenize_text():

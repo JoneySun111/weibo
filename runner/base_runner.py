@@ -112,7 +112,7 @@ class BaseRunner:
             output = math.e ** self.model(batch_data)
             pred = torch.max(output, dim=-1, keepdim=False)[-1]
             res = list(zip(batch_data, pred))
-            print("\n".join([str(x) for x in res]))
+            # print("\n".join([str(x) for x in res]))
             return output
         ...
 
