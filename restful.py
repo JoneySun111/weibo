@@ -207,7 +207,7 @@ tokenizer = None
 def inference_data(data):
     global runner
     if runner is None:
-        cfg = Config.fromfile('configs/inference/cnn_inference.py')
+        cfg = Config.fromfile('configs/cnn_inference.py')
         cfg.update(Config.from_list(['--inference', '1']))
         runner = BaseRunner(cfg)
     output = runner.inference(data)
@@ -231,7 +231,7 @@ def _inference_datas(data):
 
     global runner
     if runner is None:
-        cfg = Config.fromfile('configs/inference/cnn_inference.py')
+        cfg = Config.fromfile('configs/cnn_inference.py')
         cfg.update(Config.from_list(['--inference', '1']))
         runner = BaseRunner(cfg)
     output = runner.inference([x.get('text') for x in data])
@@ -273,7 +273,7 @@ def _tokenize_data(data, remove_topic=0):
 def embedding(data):
     global runner
     if runner is None:
-        cfg = Config.fromfile('configs/inference/cnn_inference.py')
+        cfg = Config.fromfile('configs/cnn_inference.py')
         cfg.update(Config.from_list(['--inference', '1']))
         runner = BaseRunner(cfg)
     return str(runner.test_embedding(data))
