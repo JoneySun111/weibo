@@ -3,6 +3,7 @@ import torch
 import random
 import sys
 from dataloader import *
+
 try:
     from minlptokenizer.tokenizer import MiNLPTokenizer
 except:
@@ -28,8 +29,8 @@ class SkipGramDataset(torch.utils.data.Dataset):
             self.tokenizer = MiNLPTokenizer(granularity='fine')
         self.dataset = OldDataset(path_list)
         for data, _label in self.dataset:
-            if(tokenize):
-                data=self.tokenizer.cut(data)
+            if tokenize:
+                data = self.tokenizer.cut(data)
             self.data.append(data)
         # for file in path_list:
         #     with open(file, 'r', encoding='utf8') as f:
@@ -58,7 +59,8 @@ class SkipGramDataset(torch.utils.data.Dataset):
         pos_words = resize0(pos_words, 0, self.window_size * 2)
         neg_words = resize0(neg_words, 0, self.n_samples * pos_words.shape[0])
         return center_word, pos_words, neg_words
-    
+
+
 class WordSkipGramDataset(SkipGramDataset):
     def __init__(self, path_list, mapping_path, window_size=3, n_samples=1):
         self.path_list = path_list

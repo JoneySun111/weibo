@@ -78,4 +78,3 @@ class CNNRunner(BaseRunner):
 
         self.after_val_epoch()
         self.model.train()
-

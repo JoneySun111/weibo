@@ -180,7 +180,7 @@ def read_csv():
     import random
 
     path = 'F:\Desktop\毕设\ChineseNlpCorpus-master\weibo_senti_100k\weibo_senti_100k'
-    file='F:\Desktop\毕设\数据集\simplifyweibo_4_moods.csv'
+    file = 'F:\Desktop\毕设\数据集\simplifyweibo_4_moods.csv'
     pd_all = pd.read_csv(path + '\weibo_senti_100k.csv')
     # pd_all = pd.read_csv(file)
     # print(pd_all.sample(20))
@@ -203,7 +203,13 @@ def read_csv():
 
 def save_mapping():
     dataset = OldDataset(['dataset/train_10w.data', 'dataset/test_2w.data'])
-    dataset = OldDataset(['dataset/dataset3_train.data', 'dataset/dataset3_test.data','dataset/mydataset_label.data'])
+    dataset = OldDataset(
+        [
+            'dataset/dataset3_train.data',
+            'dataset/dataset3_test.data',
+            'dataset/mydataset_label.data',
+        ]
+    )
     dataset = OldDataset(['dataset/mydataset_train.data', 'dataset/mydataset_test.data'])
     # dataset = OldDataset(['dataset/test_2w.data'])
     dataloader = torch.utils.data.DataLoader(dataset=dataset, batch_size=batch_size, shuffle=True)

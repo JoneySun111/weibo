@@ -39,7 +39,7 @@ class BaseRunner:
         self.criterion = eval(cfg.get("criterion", '0'))
         self.init_dataloader()
         self.log = log(self.log_interval, self.name)
-        self.optimizer = eval(cfg.get("optimizer"))(self.model.parameters(),lr=1e-3)
+        self.optimizer = eval(cfg.get("optimizer"))(self.model.parameters(), lr=1e-3)
         self.epoch = 1
         self.iter = 1
         self.inner_iter = 0
@@ -182,7 +182,7 @@ class BaseRunner:
         torch.save(self.model, path)
 
     def load_checkpoint(self, path):
-        self.model = torch.load(path,map_location=torch.device(self.device))
+        self.model = torch.load(path, map_location=torch.device(self.device))
         print("load_checkpoint from {}".format(path))
 
     def test_embedding(self, key="None"):

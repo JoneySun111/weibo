@@ -105,7 +105,7 @@ class mysql:
     @classmethod
     def add_blog(cls, text, **kwargs):
         # select COLUMN_NAME from information_schema.COLUMNS where table_name = 'blog' and table_schema = 'Weibo';
-        kwargs.setdefault('id',kwargs.get('mid'))
+        kwargs.setdefault('id', kwargs.get('mid'))
         keys = ('id', 'text', 'user_id', 'tool', 'time', 'is_original', 'up', 'retweet', 'comment')
         kwargs['text'] = text
         kwargs = dict(filter(lambda x: x[0] in keys, kwargs.items()))

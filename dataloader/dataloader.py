@@ -48,8 +48,8 @@ class Dataloader:
             pass
         return batch_data
 
+
 class WordDataloader(Dataloader):
-    
     def reset(
         self,
     ):

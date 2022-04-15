@@ -16,7 +16,7 @@ class CNNModel(nn.Module):
             print(f'load embedding from {chkpt_path} success, embedding_size={self.embedding_size}')
         except:
             print(f'load embedding from {chkpt_path} fail')
-            vocab_size=3000
+            vocab_size = 3000
             self.embedding = nn.Embedding(vocab_size, self.embedding_size, padding_idx=mapping.PAD)
             self.embedding.weight.data.uniform_(-1, 1)
             ...

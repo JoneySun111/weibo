@@ -61,15 +61,15 @@ class WordDataset(OldDataset):
 
 
 if __name__ == '__main__':
-    dataset=OldDataset(['dataset/train_10w_word.data'])
+    dataset = OldDataset(['dataset/train_10w_word.data'])
     print(len(dataset[0][0]))
     # import torch
-    batch_size=10
+    batch_size = 10
     dataloader = torch.utils.data.DataLoader(dataset=dataset, batch_size=batch_size, shuffle=True)
     for x in dataloader:
         print(x)
         break
-    # for x in 
+    # for x in
 
 # class TxtDataset(Dataset):
 #     def __init__(

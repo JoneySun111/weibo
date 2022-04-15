@@ -9,9 +9,9 @@
     'valid_dataloader': "torch.utils.data.DataLoader(dataset="
     "OldDataset(['dataset/test_2w_word.data'],)"
     ", batch_size=batch_size, shuffle=True)",
-    'transform': "[" 
-        "WordTransfomer(),"
-        "BaseTransform('dump/tokenizer_mapping_12w_3000.data',max_word_size=100)"
+    'transform': "["
+    "WordTransfomer(),"
+    "BaseTransform('dump/tokenizer_mapping_12w_3000.data',max_word_size=100)"
     "]",
     'optimizer': 'optim.Adam',
     'criterion': 'F.nll_loss',
