@@ -1,3 +1,4 @@
+from dataloader.dataset import OldDataset
 from weibo import *
 from mysql import *
 from time import time
@@ -135,9 +136,39 @@ def write_hot(max_page=20):
             cnt = cnt + write_comments(blogs, 10)
         log(f'{key} {cnt} comments finish')
 
+def write_comments_label():
+    comments=mysql.query_comments(where=' label !="" ',page=0,page_size=2000)
+    with open("dataset/mydataset_label.data","w",encoding='utf-8') as f:
+        for comment in comments:
+            id,text,label=comment[0],comment[5],comment[-1]
+            f.write("{},{},{}\n".format(id,label,text))
+
+def test_acc():
+    import dataloader
+    from restful import _inference_datas
+    import torch
+    dataset = OldDataset(['dataset/mydataset_label.data'])
+    batch_size=50
+    dataloader = torch.utils.data.DataLoader(dataset=dataset, batch_size=batch_size, shuffle=False)
+    acc=torch.zeros([1])
+    total=torch.zeros([1])
+    for data in dataloader:
+        input=[{'text':x} for x in data[0]]
+        pred=_inference_datas(input)
+        labels=[x['label'] for x in pred]
+        pred=torch.tensor(labels)
+        # print(data[1])
+        # print(pred)
+        acc+=data[1].eq(pred).sum()
+        total+=len(data[1])
+        # break
+    print(acc,total,acc/total)
+        
 
 if __name__ == '__main__':
-    write_hot(4)
+    # write_comments_label()
+    test_acc()
+    # write_hot(4)
     # write_blogs([x[0] for x in mysql.query_all_users()], max_pages=5, _write_comments=True)
     # fill_user_info([x[0] for x in mysql.query_all_users()])
     # write_blogs([x[0] for x in mysql.query_all_users()],3)

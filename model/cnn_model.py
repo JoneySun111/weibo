@@ -5,7 +5,7 @@ import torch.nn.functional as F
 
 
 class CNNModel(nn.Module):
-    def __init__(self, out_channels, chkpt_path=''):
+    def __init__(self, out_channels, chkpt_path='', emotion=2):
         super(CNNModel, self).__init__()
         self.embedding_size = 40
         try:
@@ -16,6 +16,9 @@ class CNNModel(nn.Module):
             print(f'load embedding from {chkpt_path} success, embedding_size={self.embedding_size}')
         except:
             print(f'load embedding from {chkpt_path} fail')
+            vocab_size=3000
+            self.embedding = nn.Embedding(vocab_size, self.embedding_size, padding_idx=mapping.PAD)
+            self.embedding.weight.data.uniform_(-1, 1)
             ...
         self.conv1 = nn.Conv2d(
             in_channels=1,
@@ -35,7 +38,7 @@ class CNNModel(nn.Module):
             kernel_size=(7, self.embedding_size),
             padding=[3, 0],
         )
-        self.fc = nn.Linear(out_channels * 3, 2)
+        self.fc = nn.Linear(out_channels * 3, emotion)
 
     def forward(self, x):
         # x(Batch,length)
