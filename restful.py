@@ -254,6 +254,8 @@ def _tokenize_data(data, remove_topic=0):
     tokenizer = BaseTokenizer()
 
     def _remove_topic(text):
+        if len(text) == 0:
+            text = ' '
         if remove_topic == 0:
             return text
         lst = text.split('#')
