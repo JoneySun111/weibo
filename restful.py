@@ -118,7 +118,7 @@ def search_realtime():
     if inference and 'data' in data:
         data['data'] = _inference_datas(data['data'])
     if tokenize and 'data' in data:
-        data['data'] = _tokenize_data(data['data'])
+        data['data'] = _tokenize_data(data['data'], remove_topic=1)
     add_blogs(data['data'])
     return return_data(data)
 
@@ -176,10 +176,19 @@ def search(keyword):
 
 @app.route('/get_blogs', methods=['GET', 'POST'])
 def get_blogs():
-    user_id, page = get('user_id'), get('page', 1)
-    res = Weibo().get_mblogs(user_id, page)
-    add_blogs(res['data'])
-    return res
+    user_id, page, inference, tokenize = (
+        get('user_id'),
+        get('page', 1),
+        get('inference', 0),
+        get('tokenize', 0),
+    )
+    data = Weibo().get_mblogs(user_id, page)
+    add_blogs(data['data'])
+    if inference and 'data' in data:
+        data['data'] = _inference_datas(data['data'])
+    if tokenize and 'data' in data:
+        data['data'] = _tokenize_data(data['data'])
+    return data
 
 
 @app.route('/get_comments', methods=['GET', 'POST'])
@@ -238,10 +247,20 @@ def inference_datas():
     return {'count': len(data), 'data': _inference_datas(data)}
 
 
-def _tokenize_data(data):
+def _tokenize_data(data, remove_topic=0):
     global tokenizer
     tokenizer = BaseTokenizer()
-    output = tokenizer([x.get('text') for x in data])
+
+    def _remove_topic(text):
+        if remove_topic==0:
+            return text
+        lst = text.split('#')
+        text = ''
+        for i in range(0, len(lst), 2):
+            text += lst[i]
+        return text
+
+    output = tokenizer([_remove_topic(x.get('text')) for x in data])
     for i in range(len(data)):
         data[i]['tokenize_result'] = output[i]
     return data
