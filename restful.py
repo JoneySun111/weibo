@@ -6,7 +6,6 @@ from train import *
 from transform.base_tokenizer import *
 import json
 import datetime
-from .runner import *
 
 
 app = Flask(__name__)
@@ -202,6 +201,7 @@ def get_comments():
 
 runner = None
 tokenizer = None
+novel_runner = None
 
 
 @app.route('/inference/<data>', methods=['GET', 'POST'])
@@ -246,6 +246,8 @@ def _inference_datas(data):
     return data
 
 def continuation(sentence, length = 100):
+    if isinstance(length, str):
+        length = int(length)
     global novel_runner
     if novel_runner is None:
         cfg = Config.fromfile('configs/novel/config_inference.py')
@@ -312,7 +314,7 @@ def get_hot_m():
 
 @app.route('/novel', methods=['GET'])
 def novel():
-    return return_data(continuation(get('sentence'), get('length', 50)))
+    return return_data(continuation(get('sentence', '郭靖哈哈大笑，说道'), get('length', 50)))
 
 
 if __name__ == '__main__':

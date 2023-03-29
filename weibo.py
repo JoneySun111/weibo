@@ -30,9 +30,9 @@ class Weibo:
             {
                 'Cookie': 'SUB=_2A25PVG10DeRhGeNM7lER9CnEzzSIHXVst3M8rDV6PUJbktANLUvkkW1NTgdeFGFg4kxBaTUsZ86dmkae7jH_Rmh3; SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9WWB9G_m9pdXDuHZy6gBjkmr5NHD95Qfeo-0ehBN1hBRWs4DqcjzCJvV9PLKUgRt; WEIBOCN_FROM=1110006030; MLOGIN=1; _T_WM=98180070740; mweibo_short_token=a62447be08; M_WEIBOCN_PARAMS=luicode=20000174&uicode=20000174'
             },
-            {
-                'Cookie': 'MLOGIN=1; _T_WM=98180070740; SUB=_2A25PXDreDeRhGeNG7lYW8CbIwz2IHXVsv0aWrDV6PUJbktAKLU7kkW1NS1Lx35gh5_SQtFwSe210Ku4KgE59oX65; SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9Whv8r-3OqZMEDdQ2Y2XoHn25NHD95Qf1h-XS05RShnpWs4Dqcjci--RiKn7iKyhi--ciKnRiK.pi--NiKnRi-zpi--fiK.7iKn0i--ci-27iK.Ni--fi-82iK.7; SSOLoginState=1649953423; WEIBOCN_FROM=1110006030; M_WEIBOCN_PARAMS=luicode=20000174&uicode=20000174'
-            },
+            # {
+            #     'Cookie': 'MLOGIN=1; _T_WM=98180070740; SUB=_2A25PXDreDeRhGeNG7lYW8CbIwz2IHXVsv0aWrDV6PUJbktAKLU7kkW1NS1Lx35gh5_SQtFwSe210Ku4KgE59oX65; SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9Whv8r-3OqZMEDdQ2Y2XoHn25NHD95Qf1h-XS05RShnpWs4Dqcjci--RiKn7iKyhi--ciKnRiK.pi--NiKnRi-zpi--fiK.7iKn0i--ci-27iK.Ni--fi-82iK.7; SSOLoginState=1649953423; WEIBOCN_FROM=1110006030; M_WEIBOCN_PARAMS=luicode=20000174&uicode=20000174'
+            # },
         ]
         self.headers = [
             {
@@ -41,11 +41,11 @@ class Weibo:
                 'Cookie': 'SUB=_2A25PVG10DeRhGeNM7lER9CnEzzSIHXVst3M8rDV6PUJbktANLUvkkW1NTgdeFGFg4kxBaTUsZ86dmkae7jH_Rmh3; SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9WWB9G_m9pdXDuHZy6gBjkmr5NHD95Qfeo-0ehBN1hBRWs4DqcjzCJvV9PLKUgRt; WEIBOCN_FROM=1110006030; MLOGIN=1; _T_WM=98180070740; mweibo_short_token=a62447be08; M_WEIBOCN_PARAMS=luicode=20000174&uicode=20000174',
                 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.55 Safari/537.36',
             },
-            {
-                'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-                'Accept-Language': 'zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2',
-                'Cookie': 'MLOGIN=1; _T_WM=98180070740; SUB=_2A25PXDreDeRhGeNG7lYW8CbIwz2IHXVsv0aWrDV6PUJbktAKLU7kkW1NS1Lx35gh5_SQtFwSe210Ku4KgE59oX65; SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9Whv8r-3OqZMEDdQ2Y2XoHn25NHD95Qf1h-XS05RShnpWs4Dqcjci--RiKn7iKyhi--ciKnRiK.pi--NiKnRi-zpi--fiK.7iKn0i--ci-27iK.Ni--fi-82iK.7; SSOLoginState=1649953423; WEIBOCN_FROM=1110006030; M_WEIBOCN_PARAMS=luicode=20000174&uicode=20000174',
-            },
+            # {
+            #     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+            #     'Accept-Language': 'zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2',
+            #     'Cookie': 'MLOGIN=1; _T_WM=98180070740; SUB=_2A25PXDreDeRhGeNG7lYW8CbIwz2IHXVsv0aWrDV6PUJbktAKLU7kkW1NS1Lx35gh5_SQtFwSe210Ku4KgE59oX65; SUBP=0033WrSXqPxfM725Ws9jqgMF55529P9D9Whv8r-3OqZMEDdQ2Y2XoHn25NHD95Qf1h-XS05RShnpWs4Dqcjci--RiKn7iKyhi--ciKnRiK.pi--NiKnRi-zpi--fiK.7iKn0i--ci-27iK.Ni--fi-82iK.7; SSOLoginState=1649953423; WEIBOCN_FROM=1110006030; M_WEIBOCN_PARAMS=luicode=20000174&uicode=20000174',
+            # },
         ]
         pass
 
