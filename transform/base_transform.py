@@ -2,9 +2,10 @@ from mapping import *
 
 
 class BaseTransform:
-    def __init__(self, mapping_path, max_word_size):
+    def __init__(self, mapping_path, max_word_size = None):
         self.mp = mapping.load(mapping_path)
-        self.mp.set_word_size(max_word_size)
+        if max_word_size is not None:
+            self.mp.set_word_size(max_word_size)
 
     def __call__(self, data, mode='sentences'):
         if mode == 'sentences':

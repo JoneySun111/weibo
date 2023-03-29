@@ -21,7 +21,16 @@ batch_size = 100
 mapping_size = 3000
 max_word_size = 100
 
-
+def save_mapping_novel():
+    dataset = NovelDataset(['dataset/shediaoyingxiongzhuan.txt'], 1, 1)
+    dataloader = torch.utils.data.DataLoader(dataset=dataset, batch_size=batch_size, shuffle=True)
+    mp = mapping()
+    for i, data in enumerate(dataloader):
+        mp.add_sentence(data)
+    mp.init()
+    print(len(mp.id2word))
+    print(mp.get_sentence(range(0, 20)))
+    mp.dump('dump/mapping_novel.data')
 def test_mapping():
     dataset = OldDataset(['dataset/train.txt', 'dataset/test.txt'])
     dataloader = torch.utils.data.DataLoader(dataset=dataset, batch_size=batch_size, shuffle=True)
@@ -275,6 +284,7 @@ if __name__ == '__main__':
     # test_tokenizer()
     # test_model()
     # read_csv()
-    save_mapping()
+    # save_mapping()
+    save_mapping_novel()
     # tokenize_text()
     # deal_tsv()

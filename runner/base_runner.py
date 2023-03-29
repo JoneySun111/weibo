@@ -39,7 +39,8 @@ class BaseRunner:
         self.criterion = eval(cfg.get("criterion", '0'))
         self.init_dataloader()
         self.log = log(self.log_interval, self.name)
-        self.optimizer = eval(cfg.get("optimizer"))(self.model.parameters(), lr=1e-3)
+        self.lr = cfg.get('lr', 1e-3)
+        self.optimizer = eval(cfg.get("optimizer"))(self.model.parameters(), lr=self.lr)
         self.epoch = 1
         self.iter = 1
         self.inner_iter = 0

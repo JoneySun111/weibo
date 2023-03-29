@@ -28,6 +28,38 @@ class TxtDataset(torch.utils.data.Dataset):
     def __getitem__(self, idx):
         return self.data[idx]
 
+class NovelDataset(torch.utils.data.Dataset):
+    def __init__(self, path_list, sentence_size=100, step=20):
+        super().__init__()
+        self.path_list = path_list
+        self.sentence_size = sentence_size
+        self.step = step
+        assert isinstance(path_list, list)
+        self.data = []
+        self.lens = []
+        for file in path_list:
+            with open(file, 'r', encoding='utf8') as f:
+                self.data.append(f.read())
+                self.lens.append(self._get_lens(len(self.data[-1])))
+
+    def _get_lens(self, size):
+        if size < self.sentence_size:
+            return 0
+        return (size - self.sentence_size) // self.step + 1
+
+    def __len__(self):
+        return sum(self.lens)
+
+    def __getitem__(self, idx):
+        now_idx = 0
+        for i in range(len(self.data)):
+            if now_idx + self.lens[i] > idx:
+                start_idx = (idx - now_idx) * self.step
+                return self.data[i][start_idx : start_idx + self.sentence_size]
+            now_idx += self.lens[i]
+        return None
+        
+
 
 class OldDataset(torch.utils.data.Dataset):
     def __init__(
@@ -61,15 +93,16 @@ class WordDataset(OldDataset):
 
 
 if __name__ == '__main__':
-    dataset = OldDataset(['dataset/train_10w_word.data'])
-    print(len(dataset[0][0]))
-    # import torch
-    batch_size = 10
-    dataloader = torch.utils.data.DataLoader(dataset=dataset, batch_size=batch_size, shuffle=True)
-    for x in dataloader:
-        print(x)
-        break
-    # for x in
+    # dataset = OldDataset(['dataset/train_10w_word.data'])
+    # print(len(dataset[0][0]))
+    # # import torch
+    # batch_size = 10
+    # dataloader = torch.utils.data.DataLoader(dataset=dataset, batch_size=batch_size, shuffle=True)
+    # for x in dataloader:
+    #     print(x)
+    #     break
+    dataset = NovelDataset(["dataset/shediaoyingxiongzhuan.txt"])
+    print(len(dataset))
 
 # class TxtDataset(Dataset):
 #     def __init__(

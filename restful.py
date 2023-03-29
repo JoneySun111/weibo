@@ -6,6 +6,7 @@ from train import *
 from transform.base_tokenizer import *
 import json
 import datetime
+from .runner import *
 
 
 app = Flask(__name__)
@@ -244,6 +245,15 @@ def _inference_datas(data):
         data[i]['label'] = temp_prob(prob[i])  # res[i]
     return data
 
+def continuation(sentence, length = 100):
+    global novel_runner
+    if novel_runner is None:
+        cfg = Config.fromfile('configs/novel/config_inference.py')
+        cfg.update(Config.from_list(['--inference', '1']))
+        novel_runner = NovelRunner(cfg)
+    result = novel_runner.inference(sentence, length)
+    return result
+
 
 @app.route('/inference', methods=['GET', 'POST'])
 def inference_datas():
@@ -299,6 +309,10 @@ def get_hot():
 @app.route('/get_hot_m', methods=['GET', 'POST'])
 def get_hot_m():
     return return_data(Weibo().get_hot_m())
+
+@app.route('/novel', methods=['GET'])
+def novel():
+    return return_data(continuation(get('sentence'), get('length', 50)))
 
 
 if __name__ == '__main__':

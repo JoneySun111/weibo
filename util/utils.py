@@ -1,6 +1,7 @@
 import time
 import os
 import torch
+import string
 
 
 def get_time_str():
@@ -26,6 +27,8 @@ def resize0(t, dim=0, target_size=0):
     shape[dim] = target_size - shape[dim]
     return torch.concat((t, torch.zeros(shape, dtype=t.dtype, device=t.device)), dim)
 
+def is_punctuation(word):
+    return word in string.punctuation + "，。？！（）、：‘’“”"
 
 if __name__ == '__main__':
     t = torch.ones([2, 2])
