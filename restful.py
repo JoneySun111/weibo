@@ -202,6 +202,7 @@ def get_comments():
 runner = None
 tokenizer = None
 novel_runner = None
+lunyu_runner = None
 
 
 @app.route('/inference/<data>', methods=['GET', 'POST'])
@@ -245,7 +246,7 @@ def _inference_datas(data):
         data[i]['label'] = temp_prob(prob[i])  # res[i]
     return data
 
-def continuation(sentence, length = 100):
+def continuation_novel(sentence, length = 100):
     if isinstance(length, str):
         length = int(length)
     global novel_runner
@@ -254,6 +255,17 @@ def continuation(sentence, length = 100):
         cfg.update(Config.from_list(['--inference', '1']))
         novel_runner = NovelRunner(cfg)
     result = novel_runner.inference(sentence, length)
+    return result
+
+def continuation_lunyu(sentence, length = 100):
+    if isinstance(length, str):
+        length = int(length)
+    global lunyu_runner
+    if lunyu_runner is None:
+        cfg = Config.fromfile('configs/lunyu/config_inference.py')
+        cfg.update(Config.from_list(['--inference', '1']))
+        lunyu_runner = NovelRunner(cfg)
+    result = lunyu_runner.inference(sentence, length)
     return result
 
 
@@ -314,7 +326,11 @@ def get_hot_m():
 
 @app.route('/novel', methods=['GET'])
 def novel():
-    return return_data(continuation(get('sentence', '郭靖哈哈大笑，说道'), get('length', 50)))
+    return return_data(continuation_novel(get('sentence', '郭靖哈哈大笑，说道'), get('length', 50)))
+
+@app.route('/lunyu', methods=['GET'])
+def lunyu():
+    return return_data(continuation_lunyu(get('sentence', '孔子曰'), get('length', 100)))
 
 
 if __name__ == '__main__':

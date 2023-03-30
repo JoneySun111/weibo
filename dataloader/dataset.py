@@ -39,8 +39,10 @@ class NovelDataset(torch.utils.data.Dataset):
         self.lens = []
         for file in path_list:
             with open(file, 'r', encoding='utf8') as f:
-                self.data.append(f.read())
-                self.lens.append(self._get_lens(len(self.data[-1])))
+                lst = f.read().strip().split('\n\n')
+                for x in lst:
+                    self.data.append(x)
+                    self.lens.append(self._get_lens(len(x)))
 
     def _get_lens(self, size):
         if size < self.sentence_size:
